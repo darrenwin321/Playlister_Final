@@ -1,7 +1,9 @@
+import logo from './playlister_img.png'
 export default function SplashScreen() {
     return (
         <div id="splash-screen">
-            Playlister
+            <img src={logo} alt="logo"/>
+            <div>All your music in one place</div>
         </div>
     )
 }

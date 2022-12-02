@@ -97,7 +97,7 @@ export default function AppBanner() {
 
     return (
         <Box sx={{flexGrow: 1}}>
-            <AppBar position="static">
+            <AppBar position="static" elevation={0} sx={{ bgcolor: "orange" }}>
                 <Toolbar>
                     <Typography                        
                         variant="h4"
@@ -107,8 +107,8 @@ export default function AppBanner() {
                     >
                         <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
                     </Typography>
-                    <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
-                    <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' } }}>
+                    <Box sx={{ flexGrow: 1 }}>{editToolbar} </Box>
+                    <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' }}}>
                         <IconButton
                             size="large"
                             edge="end"

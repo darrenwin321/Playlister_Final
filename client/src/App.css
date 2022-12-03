@@ -17,7 +17,7 @@
 }
 
 body {
-  background-image: white
+  background-image: url("https://img.freepik.com/premium-vector/set-hand-drawn-music-theme-isolated-white-background-black-doodle-set-musical-instruments-theme_119217-537.jpg?w=826")
 }
 
 #root {
@@ -149,6 +149,7 @@ body {
 }
 
 #list-selector-list {
+  background-image: linear-gradient(orange, white);
   position: absolute;
   left: 0%;
   top: 10%;
@@ -157,6 +158,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  overflow-x: hidden;
 }
 
 

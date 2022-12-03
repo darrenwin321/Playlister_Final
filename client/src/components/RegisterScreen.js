@@ -3,6 +3,7 @@ import AuthContext from '../auth'
 import MUIErrorModal from './MUIErrorModal'
 import Copyright from './Copyright'
 
+import logo from './playlister_img.png'
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -47,6 +48,7 @@ export default function RegisterScreen() {
                         alignItems: 'center',
                     }}
                 >
+                    <img style={{ width: 130, height: 50 }} src={logo} alt="logo"/>
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>

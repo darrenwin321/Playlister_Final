@@ -127,6 +127,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 50pt;
+  background-color: #fff5e2;
 }
 
 #list-selector-heading {
@@ -157,8 +158,8 @@ body {
   height: 90%;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
-  overflow-x: hidden;
+  /* overflow: scroll;
+  overflow-x: hidden; */
 }
 
 

@@ -95,6 +95,11 @@ export default function AppBanner() {
             return <AccountCircle />;
     }
 
+    let houseIcon = <></>;
+    if (!auth.user){
+        houseIcon = <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>;
+    }
+
     return (
         <Box sx={{flexGrow: 1}}>
             <AppBar position="static" elevation={0} sx={{ bgcolor: "orange" }}>
@@ -105,7 +110,7 @@ export default function AppBanner() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
-                        <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white' }} to='/'>⌂</Link>
+                       {houseIcon}
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar} </Box>
                     <Box sx={{ height: "90px", display: { xs: 'none', md: 'flex' }}}>

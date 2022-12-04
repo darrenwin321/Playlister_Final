@@ -19,6 +19,7 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair, selected } = props;
+    
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -74,6 +75,7 @@ function ListCard(props) {
         cardStatus = true;
     }
     let cardElement =
+    
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}

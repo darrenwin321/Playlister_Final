@@ -1,5 +1,12 @@
 import React from 'react';
 import YouTube from 'react-youtube';
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import PauseIcon from '@mui/icons-material/Pause';
+import { IconButton } from '@mui/material';
 
 export default function YouTubePlayerExample() {
     // THIS EXAMPLE DEMONSTRATES HOW TO DYNAMICALLY MAKE A
@@ -13,6 +20,9 @@ export default function YouTubePlayerExample() {
         "8RbXIMZmVv8",
         "8UbNbor3OqQ"
     ];
+    
+    // this will allow us to interact with the player without having to interact with event.target
+    let videoPlayer = null;
 
     // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
     let currentSong = 0;
@@ -40,9 +50,39 @@ export default function YouTubePlayerExample() {
         currentSong = currentSong % playlist.length;
     }
 
+    function decSong() {
+        currentSong--;
+        if (currentSong < 0){
+            currentSong = playlist.length - 1;
+        }
+        else{
+            currentSong = currentSong % playlist.length;
+        }
+        
+    }
+
     function onPlayerReady(event) {
         loadAndPlayCurrentSong(event.target);
         event.target.playVideo();
+        videoPlayer = event.target;
+    }
+
+    function handlePrevious(){
+        decSong();
+        loadAndPlayCurrentSong(videoPlayer);
+    }
+
+    function handlePause(){
+        videoPlayer.pauseVideo();
+    }
+
+    function handlePlay(){
+        videoPlayer.playVideo();
+    }
+
+    function handleNext(){
+        incSong();
+        loadAndPlayCurrentSong(videoPlayer);
     }
 
     // THIS IS OUR EVENT HANDLER FOR WHEN THE YOUTUBE PLAYER'S STATE
@@ -74,12 +114,61 @@ export default function YouTubePlayerExample() {
             console.log("5 Video cued");
         }
     }
+    
+    let card = 
+        <Box>
+            <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
+                Playlist: 
+            </Typography>
+            <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
+                Current Song: 
+            </Typography>
+            <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
+                Artist: 
+            </Typography>
+            <Box display="flex" justifyContent="center" alignItems="center">
+                <IconButton>
+                    <SkipPreviousIcon 
+                    sx={{fontSize: '2.5rem', color: 'black'}}
+                    onClick={handlePrevious}
+                    /> 
+                </IconButton>
+                <IconButton>
+                    <PauseIcon 
+                    sx={{fontSize: '2.5rem', color: 'black'}}
+                    onClick={handlePause}
+                    /> 
+                </IconButton>
+                <IconButton>
+                    <PlayArrowIcon 
+                    sx={{fontSize: '2.5rem', color: 'black'}}
+                    onClick={handlePlay}
+                    /> 
+                </IconButton>
+                <IconButton>
+                    <SkipNextIcon 
+                    sx={{fontSize: '2.5rem', color: 'black'}}
+                    onClick={handleNext}
+                    />
+                </IconButton>
+                
+            </Box>
+        </Box>
 
-    return <YouTube
-        videoId={playlist[currentSong]}
-        opts={playerOptions}
-        onReady={onPlayerReady}
-        onStateChange={onPlayerStateChange} />;
+    return (
+        <>
+            <YouTube
+                videoId={playlist[currentSong]}
+                opts={playerOptions}
+                onReady={onPlayerReady}
+                onStateChange={onPlayerStateChange} 
+            />
+            {card}
+        </>
+        
+        )
+        
+        ;
 }
 
 

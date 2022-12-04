@@ -18,6 +18,10 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import PersonIcon from '@mui/icons-material/Person';
 import TextField from '@mui/material/TextField';
 import SortIcon from '@mui/icons-material/Sort'
+import { IconButton } from '@mui/material';
+import Button from '@mui/material/Button';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 
 /*
@@ -56,16 +60,23 @@ function TabPanel(props) {
 
 const HomeScreen = () => {
     const { store } = useContext(GlobalStoreContext);
+    const [value, setValue] = React.useState(0);
+    const handleTabChange = (event, newValue) => {
+        setValue(newValue);
+      };
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         store.loadIdNamePairs();
     }, []);
-
-    const [value, setValue] = React.useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-      };
 
     function handleCreateNewList() {
         store.createNewList();
@@ -92,9 +103,31 @@ const HomeScreen = () => {
                         />
                 </Grid>
                 <Grid item xs={1}>
-                    <SortIcon
-                        sx={{fontSize: '2.8rem', m: 2}}
-                    />
+                    Sort By
+                    <IconButton>
+                        <SortIcon
+                            sx={{fontSize: '2.8rem'}}
+                            onClick={handleClick}
+                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-expanded={open ? 'true' : undefined}
+                            aria-haspopup="true"
+                        />
+                    </IconButton>
+                    <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          'aria-labelledby': 'basic-button',
+                        }}
+                    >
+                        <MenuItem>Name (A - Z)</MenuItem>
+                        <MenuItem>Publish Date (Newest)</MenuItem>
+                        <MenuItem>Listens (High - Low)</MenuItem>
+                        <MenuItem>Likes (High - Low)</MenuItem>
+                        <MenuItem>Dislikes (High - Low)</MenuItem>
+                    </Menu>
                 </Grid>
                 <Grid item xs={8} overflow='scroll' height={'600px'}>
                     <List sx={{width: '100%', mb:"20px" }}>
@@ -113,7 +146,7 @@ const HomeScreen = () => {
 
                 <Grid item xs={4}>
                     <Box >
-                        <Tabs value={value} onChange={handleChange}>
+                        <Tabs value={value} onChange={handleTabChange}>
                             <Tab label="Video Player"{...a11yProps(0)} style={{color: 'black'}}/>
                             <Tab label="Comments" {...a11yProps(1)} style={{color: 'black'}}/>
                         </Tabs>

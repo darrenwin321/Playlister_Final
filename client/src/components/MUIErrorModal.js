@@ -1,12 +1,9 @@
 import { useContext, useState } from 'react'
 import GlobalStoreContext from '../store';
 import * as React from 'react';
-import Modal from '@mui/material/Modal';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
+import { Alert, AlertTitle, IconButton, Modal } from "@mui/material";
 import AuthContext from '../auth'
-
+import CloseIcon from '@mui/icons-material/Close';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -21,19 +18,32 @@ const style = {
 
 
 export default function MUIErrorModal() {
+    const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
-    const { auth } = useContext(AuthContext)
-
-    function handleCloseButton() {
-        store.hideModals();
-        console.log("CLOSE BUTTON CLICKED");
+    let text = ""
+    if (auth.error){
+        text = auth.error
     }
 
+    function handleClose() {
+        auth.closeModal();
+    }
     return (
-        <Modal open = {auth.errorMessage !== null}>
-         <Alert sx={style} severity="warning">{auth.errorMessage}
-         <Button sx={{color:"black", mt:"20px", ml:"85px", fontSize: 13, fontWeight: 'bold', border: 2}}variant="outlined" onClick={handleCloseButton}>Close</Button>
-         </Alert>
+        <Modal
+            open={auth.error != null} 
+        >
+                <Alert variant="filled" severity="error" action={
+                    <IconButton aria-label="close" color="inherit" size="small" onClick={handleClose}>
+                        <CloseIcon fontSize="inherit"/>
+                    </IconButton>
+                }>
+                    <AlertTitle><strong>Error</strong></AlertTitle>
+                    <div className="error-modal-dialog">
+                        <header className="dialog-header">
+                            {text}
+                        </header>
+                    </div>
+                </Alert>
         </Modal>
     );
 }

@@ -16,9 +16,7 @@ export default function YouTubePlayerExample() {
 
     // THIS HAS THE YOUTUBE IDS FOR THE SONGS IN OUR PLAYLIST
     let playlist = [
-        "mqmxkGjow1A",
-        "8RbXIMZmVv8",
-        "8UbNbor3OqQ"
+        "F0B7HDiY-10"
     ];
     
     // this will allow us to interact with the player without having to interact with event.target

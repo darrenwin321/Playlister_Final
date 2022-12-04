@@ -81,6 +81,7 @@ const HomeScreen = () => {
     function handleCreateNewList() {
         store.createNewList();
     }
+
     let listCard = "";
     if (store) {
         listCard = 

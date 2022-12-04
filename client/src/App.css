@@ -69,10 +69,10 @@ body {
   font-family: Brush Script MT;
 }
 
-#edit-toolbar {
+/* #edit-toolbar {
   background-color: transparent;
   transform: translate(41%, 0%);
-}
+} */
 
 .playlister-button,
 .playlister-button-disabled {

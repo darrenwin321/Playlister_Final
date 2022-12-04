@@ -28,8 +28,32 @@ function ListCard(props) {
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
+        if (store.currentList){
+            if (idNamePair._id === store.currentList._id){
+                store.closeCurrentList()
+            }
+            else if (idNamePair._id !== store.currentList._id){
+                store.setCurrentList(idNamePair._id);
+            }
+        }   
+        else{
+            store.setCurrentList(idNamePair._id);
+        }
+
     };
     
+    let open = false;
+    if (!store.currentList){
+        
+    }
+    else{
+        if (store.currentList._id === idNamePair._id){
+            open = true
+        }
+        else{
+            open = false
+        }
+    }
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -41,7 +65,18 @@ function ListCard(props) {
             console.log("load " + event.target.id);
 
             // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
+            if (store.currentList){
+                if (id === store.currentList._id){
+                    store.closeCurrentList()
+                }
+                else if (id !== store.currentList._id){
+                    store.setCurrentList(id);
+                }
+            }   
+            else{
+                store.setCurrentList(id);
+            }
+            
         }
     }
 
@@ -85,8 +120,16 @@ function ListCard(props) {
         cardStatus = true;
     }
     let cardElement =
-        <Accordion elevation={0} expanded={expanded === 'panel' + idNamePair._id} onChange={handleChange('panel' + idNamePair._id)} 
-        sx={{bgcolor: '#8000F00F', borderRadius:"25px" }}>
+        <Accordion 
+            // disabled={!open}
+            elevation={0} 
+            expanded={open} 
+            onChange={handleChange('panel' + idNamePair._id)} 
+            // onClick={(event) => {
+            //     handleLoadList(event, idNamePair._id)
+            // }}
+            sx={{bgcolor: '#8000F00F', borderRadius:"25px" }}
+        >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 id={idNamePair._id}

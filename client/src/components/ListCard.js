@@ -171,6 +171,7 @@ function ListCard(props) {
             // }}
             sx={{bgcolor: '#8000F00F', borderRadius:"30px", borderTopLeftRadius:'27px'}}
             disableGutters={true}
+            onDoubleClick={toggleEdit}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}

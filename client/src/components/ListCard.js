@@ -20,6 +20,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import MUIErrorModal from './MUIErrorModal'
+import MUINameErrorModal from './MUINameErrorModal';
 
 
 
@@ -73,6 +75,9 @@ function ListCard(props) {
     else if (store.isRemoveSongModalOpen()) {
         modalJSX = <MUIRemoveSongModal />;
     }
+    else if (store.isNameErrorModalOpen()){
+        modalJSX = <MUINameErrorModal />
+    }
 
     let songs = <></>
 
@@ -97,30 +102,30 @@ function ListCard(props) {
          </Box>
     }
 
-    function handleLoadList(event, id) {
-        console.log("handleLoadList for " + id);
-        if (!event.target.disabled) {
-            let _id = event.target.id;
-            if (_id.indexOf('list-card-text-') >= 0)
-                _id = ("" + _id).substring("list-card-text-".length);
+    // function handleLoadList(event, id) {
+    //     console.log("handleLoadList for " + id);
+    //     if (!event.target.disabled) {
+    //         let _id = event.target.id;
+    //         if (_id.indexOf('list-card-text-') >= 0)
+    //             _id = ("" + _id).substring("list-card-text-".length);
 
-            console.log("load " + event.target.id);
+    //         console.log("load " + event.target.id);
 
-            // CHANGE THE CURRENT LIST
-            if (store.currentList){
-                if (id === store.currentList._id){
-                    store.closeCurrentList()
-                }
-                else if (id !== store.currentList._id){
-                    store.setCurrentList(id);
-                }
-            }   
-            else{
-                store.setCurrentList(id);
-            }
+    //         // CHANGE THE CURRENT LIST
+    //         if (store.currentList){
+    //             if (id === store.currentList._id){
+    //                 store.closeCurrentList()
+    //             }
+    //             else if (id !== store.currentList._id){
+    //                 store.setCurrentList(id);
+    //             }
+    //         }   
+    //         else{
+    //             store.setCurrentList(id);
+    //         }
             
-        }
-    }
+    //     }
+    // }
 
     function handleToggleEdit(event) {
         event.stopPropagation();
@@ -144,6 +149,12 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
+            for (let i = 0; i < store.idNamePairs.length; i++){
+                if (text === store.idNamePairs[i].name){
+                    store.showNameErrorModal();
+                    return;
+                }
+            }
             let id = event.target.id.substring("list-".length);
             store.changeListName(id, text);
             toggleEdit();
@@ -171,7 +182,7 @@ function ListCard(props) {
             // }}
             sx={{bgcolor: '#8000F00F', borderRadius:"30px", borderTopLeftRadius:'27px'}}
             disableGutters={true}
-            onDoubleClick={toggleEdit}
+            onDoubleClick={handleToggleEdit}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -226,7 +237,7 @@ function ListCard(props) {
 
     if (editActive) {
         cardElement =
-            <TextField
+        <><TextField
                 margin="normal"
                 required
                 fullWidth
@@ -242,6 +253,9 @@ function ListCard(props) {
                 InputLabelProps={{style: {fontSize: 24}}}
                 autoFocus
             />
+            { modalJSX }
+            </>
+            
     }
     return (
         cardElement

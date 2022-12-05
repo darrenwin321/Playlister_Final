@@ -22,7 +22,9 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import MUIErrorModal from './MUIErrorModal'
 import MUINameErrorModal from './MUINameErrorModal';
-
+import UndoIcon from '@mui/icons-material/Undo';
+import AddIcon from '@mui/icons-material/Add';
+import RedoIcon from '@mui/icons-material/Redo';
 
 
 /*
@@ -46,6 +48,7 @@ function ListCard(props) {
                 store.closeCurrentList()
             }
             else if (idNamePair._id !== store.currentList._id){
+                store.closeCurrentList()
                 store.setCurrentList(idNamePair._id);
             }
         }   
@@ -129,6 +132,12 @@ function ListCard(props) {
 
     function handleToggleEdit(event) {
         event.stopPropagation();
+        handleUpdateText(event)
+        if (store.listNameActive){
+            return
+        }
+        store.setCurrentList(idNamePair._id);
+        console.log(store)
         toggleEdit();
     }
 
@@ -149,19 +158,37 @@ function ListCard(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
+            if (text === ''){
+                store.showNameErrorModal();
+                return;
+            }
             for (let i = 0; i < store.idNamePairs.length; i++){
-                if (text === store.idNamePairs[i].name){
-                    store.showNameErrorModal();
-                    return;
+                if (event.target.value === store.idNamePairs[i].name){
+                    if (event.target.value === store.idNamePairs[i].name && store.currentList._id != store.idNamePairs[i]._id ){
+                        console.log(store.idNamePairs.indexOf(store.currentList))
+                        store.showNameErrorModal();
+                        return;
+                    }
+                    
                 }
             }
             let id = event.target.id.substring("list-".length);
-            store.changeListName(id, text);
+            store.changeListName(id, event.target.value);
             toggleEdit();
         }
     }
     function handleUpdateText(event) {
         setText(event.target.value);
+    }
+
+    function handleAddNewSong() {
+        store.addNewSong();
+    }
+    function handleUndo() {
+        store.undo();
+    }
+    function handleRedo() {
+        store.redo();
     }
 
     let selectClass = "unselected-list-card";
@@ -172,6 +199,56 @@ function ListCard(props) {
     if (store.isListNameEditActive) {
         cardStatus = true;
     }
+
+    let card = 
+    <AccordionSummary
+        expandIcon={<ExpandMoreIcon />}
+        id={idNamePair._id}
+        key={idNamePair._id}
+        sx={{borderRadius:"30px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1, "&:hover":{backgroundColor: "white"}, }}
+        style={{transform:"translate(0%,0%)", width: '100%', fontSize: '24pt' }}
+    >
+        {/* <ListItem
+            
+            onClick={(event) => {
+                handleLoadList(event, idNamePair._id)
+            }}
+        > */}
+            <Box sx={{ p: 1, flexGrow: 1 }} elevation={0}>{idNamePair.name}</Box>
+            <Box sx={{ p: 1 }} elevation={0}>
+                <IconButton >
+                    <ThumbUpIcon style={{fontSize:'24pt'}} />
+                </IconButton> 
+            </Box>
+            <Box sx={{ p: 1 }} elevation={0}>
+                <IconButton>
+                    <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation or prevent default */}
+                </IconButton> 
+            </Box>
+        {/* </ListItem>  */}
+    </AccordionSummary>
+    if (editActive){
+        card = 
+        <TextField
+            margin="normal"
+            required
+            fullWidth
+            id={"list-" + idNamePair._id}
+            label="Playlist Name"
+            name="name"
+            autoComplete="Playlist Name"
+            className='list-card'
+            onKeyPress={handleKeyPress}
+            onChange={handleUpdateText}
+            defaultValue={idNamePair.name}
+            inputProps={{style: {fontSize: 48}}}
+            InputLabelProps={{style: {fontSize: 24}}}
+            autoFocus
+        />
+    }
+
+
+
     let cardElement =
         <Accordion 
             // disabled={!open}
@@ -184,38 +261,30 @@ function ListCard(props) {
             disableGutters={true}
             onDoubleClick={handleToggleEdit}
         >
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                id={idNamePair._id}
-                key={idNamePair._id}
-                sx={{borderRadius:"30px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1, "&:hover":{backgroundColor: "white"}, }}
-                style={{transform:"translate(0%,0%)", width: '100%', fontSize: '24pt' }}
-            >
-                 {/* <ListItem
-                    
-                    onClick={(event) => {
-                        handleLoadList(event, idNamePair._id)
-                    }}
-                > */}
-                    <Box sx={{ p: 1, flexGrow: 1 }} elevation={0}>{idNamePair.name}</Box>
-                    <Box sx={{ p: 1 }} elevation={0}>
-                         <IconButton >
-                            <ThumbUpIcon style={{fontSize:'24pt'}} />
-                        </IconButton> 
-                    </Box>
-                    <Box sx={{ p: 1 }} elevation={0}>
-                         <IconButton>
-                            <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation or prevent default */}
-                        </IconButton> 
-                    </Box>
-                {/* </ListItem>  */}
-            </AccordionSummary>
+            {card}
             <AccordionDetails>
                 <Grid container sx={{alignItems: 'center', transform:"translate(0%,-10%)", bgcolor:''}} >
                     <Grid item xs={12} position='relative' height={'400px'} sx={{borderRadius:"30px"}}>
                             {songs}
                     </Grid>
-                    <Grid item xs={10}>
+                    <Grid item xs={4}>
+                        <IconButton onClick={handleUndo} disabled={!store.canUndo()}>
+                            <UndoIcon
+                                sx={{fontSize: '2.8rem', m: 2, color:'black'}}
+                            />
+                        </IconButton>
+                        <IconButton onClick={handleAddNewSong} disabled={!store.canAddNewSong()}>
+                            <AddIcon
+                                sx={{fontSize: '2.8rem', m: 2, color:'black'}}
+                            />
+                        </IconButton>
+                        <IconButton onClick={handleRedo} disabled={!store.canRedo()}>
+                            <RedoIcon
+                                sx={{fontSize: '2.8rem', m: 2, color:'black'}}
+                            />
+                        </IconButton>
+                    </Grid>
+                    <Grid item xs={6}>
                     </Grid>
                     <Grid item xs={2}>
                             <DeleteForeverIcon
@@ -233,30 +302,6 @@ function ListCard(props) {
             { modalJSX }
         </Accordion>
         
-        
-
-    if (editActive) {
-        cardElement =
-        <><TextField
-                margin="normal"
-                required
-                fullWidth
-                id={"list-" + idNamePair._id}
-                label="Playlist Name"
-                name="name"
-                autoComplete="Playlist Name"
-                className='list-card'
-                onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
-                defaultValue={idNamePair.name}
-                inputProps={{style: {fontSize: 48}}}
-                InputLabelProps={{style: {fontSize: 24}}}
-                autoFocus
-            />
-            { modalJSX }
-            </>
-            
-    }
     return (
         cardElement
     );

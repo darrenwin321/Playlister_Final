@@ -88,7 +88,6 @@ export default function YouTubePlayerExample() {
     // VALUE TO REPRESENT THE TYPE OF STATE CHANGE. A playerStatus
     // VALUE OF 0 MEANS THE SONG PLAYING HAS ENDED.
     function onPlayerStateChange(event) {
-        videoPlayer = event.target;
         let playerStatus = event.data;
         let player = event.target;
         if (playerStatus === -1) {

@@ -21,7 +21,7 @@ const style = {
 export default function MUINameErrorModal() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
-    let text = "That name is already in use, try another one."
+    let text = "You cannot use the same name or leave the field empty, try again."
 
     function handleClose() {
         store.hideModals();

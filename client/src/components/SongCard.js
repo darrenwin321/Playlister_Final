@@ -64,7 +64,8 @@ function SongCard(props) {
                 id={'song-' + index + '-link'}
                 className="song-link"
                 href={"https://www.youtube.com/watch?v=" + song.youTubeId}>
-                {song.title} by {song.artist}
+                {song.title} by {song.artist},
+
             </a>
             <Button
                 sx={{transform:"translate(-5%, -5%)", width:"5px", height:"30px"}}

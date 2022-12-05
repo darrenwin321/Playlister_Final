@@ -18,7 +18,6 @@ const style1 = {
     backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
     border: '3px solid #000',
     padding: '20px',
-    boxShadow: 24,
 };
 
 export default function MUIEditSongModal() {
@@ -55,6 +54,7 @@ export default function MUIEditSongModal() {
     return (
         <Modal
             open={store.currentModal == "EDIT_SONG"}
+            hideBackdrop='true'
         >
         <Box sx={style1}>
             <div id="edit-song-modal" data-animation="slideInOutLeft">

@@ -11,6 +11,17 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import List from '@mui/material/List';
+import SongCard from './SongCard.js'
+import { Grid } from '@mui/material';
+import MUIEditSongModal from './MUIEditSongModal';
+import MUIRemoveSongModal from './MUIRemoveSongModal';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+
+
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -53,6 +64,37 @@ function ListCard(props) {
         else{
             open = false
         }
+    }
+
+    let modalJSX = "";
+    if (store.isEditSongModalOpen()) {
+        modalJSX = <MUIEditSongModal />;
+    }
+    else if (store.isRemoveSongModalOpen()) {
+        modalJSX = <MUIRemoveSongModal />;
+    }
+
+    let songs = <></>
+
+    if (open){
+        songs = 
+        <Box id="list-selector-list1" sx={{bgcolor:'Transparent'}}>
+        <List 
+            id="playlist-cards" 
+            sx={{overflow: 'auto' , height: '100%', width: '100%', bgcolor: 'Transparent'}}
+        >
+            {
+                store.currentList.songs.map((song, index) => (
+                    <SongCard
+                        id={'playlist-song-' + (index)}
+                        key={'playlist-song-' + (index)}
+                        index={index}
+                        song={song}
+                    />
+                ))  
+            }
+         </List>            
+         </Box>
     }
 
     function handleLoadList(event, id) {
@@ -122,19 +164,19 @@ function ListCard(props) {
     let cardElement =
         <Accordion 
             // disabled={!open}
-            elevation={0} 
             expanded={open} 
             onChange={handleChange('panel' + idNamePair._id)} 
             // onClick={(event) => {
             //     handleLoadList(event, idNamePair._id)
             // }}
-            sx={{bgcolor: '#8000F00F', borderRadius:"25px" }}
+            sx={{bgcolor: '#8000F00F', borderRadius:"30px", borderTopLeftRadius:'27px'}}
+            disableGutters={true}
         >
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 id={idNamePair._id}
                 key={idNamePair._id}
-                sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1, "&:hover":{backgroundColor: "white"}, }}
+                sx={{borderRadius:"30px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1, "&:hover":{backgroundColor: "white"}, }}
                 style={{transform:"translate(0%,0%)", width: '100%', fontSize: '24pt' }}
             >
                  {/* <ListItem
@@ -145,23 +187,38 @@ function ListCard(props) {
                 > */}
                     <Box sx={{ p: 1, flexGrow: 1 }} elevation={0}>{idNamePair.name}</Box>
                     <Box sx={{ p: 1 }} elevation={0}>
-                         <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                            <EditIcon style={{fontSize:'24pt'}} />
+                         <IconButton >
+                            <ThumbUpIcon style={{fontSize:'24pt'}} />
                         </IconButton> 
                     </Box>
                     <Box sx={{ p: 1 }} elevation={0}>
-                         <IconButton onClick={(event) => {
-                                handleDeleteList(event, idNamePair._id)
-                            }} aria-label='delete'>
-                            <DeleteIcon style={{fontSize:'24pt'}} />
+                         <IconButton>
+                            <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation or prevent default */}
                         </IconButton> 
                     </Box>
                 {/* </ListItem>  */}
             </AccordionSummary>
             <AccordionDetails>
-                Hello
+                <Grid container sx={{alignItems: 'center', transform:"translate(0%,-10%)", bgcolor:''}} >
+                    <Grid item xs={12} position='relative' height={'400px'} sx={{borderRadius:"30px"}}>
+                            {songs}
+                    </Grid>
+                    <Grid item xs={10}>
+                    </Grid>
+                    <Grid item xs={2}>
+                            <DeleteForeverIcon
+                                sx={{fontSize: '2.8rem', m: 2}}
+                            />
+                            <ContentCopyIcon
+                                sx={{fontSize: '2.8rem', m: 2}}
+                            />
+                    </Grid>
+                    <Grid item>
+
+                    </Grid>
+                </Grid>
             </AccordionDetails>
-            
+            { modalJSX }
         </Accordion>
         
         

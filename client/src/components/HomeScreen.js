@@ -22,6 +22,7 @@ import { IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import AuthContext from '../auth';
 
 
 /*
@@ -56,6 +57,7 @@ function TabPanel(props) {
       'aria-controls': `simple-tabpanel-${index}`,
     };
   }
+
   
 
 const HomeScreen = () => {
@@ -82,20 +84,35 @@ const HomeScreen = () => {
         store.createNewList();
     }
 
+    const { auth } = useContext(AuthContext);
+    let guest = false
+    let color = 'black'
+    if (auth.user && auth.user.email === 'Guest@guest.com'){
+        guest = true
+        color = ''
+    }
+
     let listCard = "";
     if (store) {
         listCard = 
             <Grid container sx={{p: 2}}>
                 <Grid item xs={11}>
+                    <IconButton disabled={guest}>
                         <CottageIcon 
-                            sx={{fontSize: '2.8rem', m: 2}}
+                            sx={{fontSize: '2.8rem', m: 2, color: {color}}}
                         /> 
+                    </IconButton>
+                    <IconButton>
                         <GroupsIcon
-                            sx={{fontSize: '2.8rem', m: 2}}
-                        /> 
-                        <PersonIcon
-                            sx={{fontSize: '2.8rem', m: 2}}
+                            sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
                         />
+                    </IconButton>    
+                    <IconButton>
+                        <PersonIcon
+                            sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
+                        />
+                    </IconButton>
+                        
                         <TextField 
                         id="Search-Bar" 
                         label="Search" 
@@ -176,7 +193,7 @@ const HomeScreen = () => {
             </Fab>
                 <img style={{ width: 260, height: 100 }} src={logo} alt="logo"/>
             </div>
-            <Box sx={{bgcolor:"background.paper"}} id="list-selector-list">
+            <Box sx={{bgcolor:"background.paper", borderTopLeftRadius:'0px'}} id="list-selector-list" elevation={0}>
                 {
                     listCard
                 }

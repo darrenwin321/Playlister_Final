@@ -60,9 +60,9 @@ export default function YouTubePlayerExample() {
     }
 
     function onPlayerReady(event) {
+        videoPlayer = event.target;
         loadAndPlayCurrentSong(event.target);
         event.target.playVideo();
-        videoPlayer = event.target;
     }
 
     function handlePrevious(){

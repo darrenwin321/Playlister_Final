@@ -20,7 +20,7 @@ export default function YouTubePlayerExample() {
     ];
     
     // this will allow us to interact with the player without having to interact with event.target
-    let videoPlayer = null;
+    var videoPlayer = null;
 
     // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
     let currentSong = 0;
@@ -60,7 +60,6 @@ export default function YouTubePlayerExample() {
     }
 
     function onPlayerReady(event) {
-        videoPlayer = event.target;
         loadAndPlayCurrentSong(event.target);
         event.target.playVideo();
     }
@@ -71,7 +70,7 @@ export default function YouTubePlayerExample() {
     }
 
     function handlePause(){
-        videoPlayer.pauseVideo();
+        playerOptions.autoplay = 2
     }
 
     function handlePlay(){
@@ -83,13 +82,21 @@ export default function YouTubePlayerExample() {
         loadAndPlayCurrentSong(videoPlayer);
     }
 
+    function videoTarget(id){
+        if (!videoPlayer){
+            console.log(id)
+            videoPlayer = id
+        }
+    }
+
     // THIS IS OUR EVENT HANDLER FOR WHEN THE YOUTUBE PLAYER'S STATE
     // CHANGES. NOTE THAT playerStatus WILL HAVE A DIFFERENT INTEGER
     // VALUE TO REPRESENT THE TYPE OF STATE CHANGE. A playerStatus
     // VALUE OF 0 MEANS THE SONG PLAYING HAS ENDED.
     function onPlayerStateChange(event) {
         let playerStatus = event.data;
-        let player = event.target;
+        let player = event.target.id;
+        videoTarget(event.target) 
         if (playerStatus === -1) {
             // VIDEO UNSTARTED
             console.log("-1 Video unstarted");
@@ -156,6 +163,7 @@ export default function YouTubePlayerExample() {
     return (
         <>
             <YouTube
+                id='videoPlayer'
                 videoId={playlist[currentSong]}
                 opts={playerOptions}
                 onReady={onPlayerReady}

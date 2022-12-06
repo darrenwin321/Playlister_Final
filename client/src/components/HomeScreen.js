@@ -92,6 +92,16 @@ const HomeScreen = () => {
         color = ''
     }
 
+    function handleAlphaSort() {
+        handleClose()
+        store.sortIdNamePairs(0);
+    }
+
+    function handleDateSort() {
+        handleClose()
+        store.sortIdNamePairs(1);
+    }
+
     let listCard = "";
     if (store) {
         listCard = 
@@ -140,8 +150,8 @@ const HomeScreen = () => {
                           'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem>Name (A - Z)</MenuItem>
-                        <MenuItem>Publish Date (Newest)</MenuItem>
+                        <MenuItem onClick={handleAlphaSort}>Name (A - Z)</MenuItem>
+                        <MenuItem onClick={handleDateSort}>Publish Date (Newest)</MenuItem>
                         <MenuItem>Listens (High - Low)</MenuItem>
                         <MenuItem>Likes (High - Low)</MenuItem>
                         <MenuItem>Dislikes (High - Low)</MenuItem>

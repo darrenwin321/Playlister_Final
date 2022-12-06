@@ -103,31 +103,6 @@ function ListCard(props) {
          </Box>
     }
 
-    // function handleLoadList(event, id) {
-    //     console.log("handleLoadList for " + id);
-    //     if (!event.target.disabled) {
-    //         let _id = event.target.id;
-    //         if (_id.indexOf('list-card-text-') >= 0)
-    //             _id = ("" + _id).substring("list-card-text-".length);
-
-    //         console.log("load " + event.target.id);
-
-    //         // CHANGE THE CURRENT LIST
-    //         if (store.currentList){
-    //             if (id === store.currentList._id){
-    //                 store.closeCurrentList()
-    //             }
-    //             else if (id !== store.currentList._id){
-    //                 store.setCurrentList(id);
-    //             }
-    //         }   
-    //         else{
-    //             store.setCurrentList(id);
-    //         }
-            
-    //     }
-    // }
-
     function handleToggleEdit(event) {
         event.stopPropagation();
         handleUpdateText(event)
@@ -215,24 +190,17 @@ function ListCard(props) {
         sx={{borderRadius:"30px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1, "&:hover":{backgroundColor: "white"}, }}
         style={{transform:"translate(0%,0%)", width: '100%', fontSize: '24pt' }}
     >
-        {/* <ListItem
-            
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }}
-        > */}
-            <Box sx={{ p: 1, flexGrow: 1 }} elevation={0} onDoubleClick={handleToggleEdit}>{idNamePair.name}</Box>
-            <Box sx={{ p: 1 }} elevation={0}>
-                <IconButton >
-                    <ThumbUpIcon style={{fontSize:'24pt'}} />
-                </IconButton> 
-            </Box>
-            <Box sx={{ p: 1 }} elevation={0}>
-                <IconButton>
-                    <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation */}
-                </IconButton> 
-            </Box>
-        {/* </ListItem>  */}
+        <Box sx={{ p: 1, flexGrow: 1 }} elevation={0} onDoubleClick={handleToggleEdit}>{idNamePair.name}</Box>
+        <Box sx={{ p: 1 }} elevation={0}>
+            <IconButton >
+                <ThumbUpIcon style={{fontSize:'24pt'}} />
+            </IconButton> 
+        </Box>
+        <Box sx={{ p: 1 }} elevation={0}>
+            <IconButton>
+                <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation */}
+            </IconButton> 
+        </Box>
     </AccordionSummary>
     if (editActive && open && !store.currentList.published){
         card = 

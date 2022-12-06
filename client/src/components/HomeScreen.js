@@ -82,6 +82,10 @@ const HomeScreen = () => {
 
     function handleCreateNewList() {
         store.createNewList();
+        // if (store.sortedBy !== -1){
+        //     store.sortIdNamePairs(store.sortedBy)
+        // }
+        
     }
 
     const { auth } = useContext(AuthContext);
@@ -94,12 +98,12 @@ const HomeScreen = () => {
 
     function handleAlphaSort() {
         handleClose()
-        store.sortIdNamePairs(0);
+        store.sortIdNamePairs(0, store.idNamePairs);
     }
 
     function handleDateSort() {
         handleClose()
-        store.sortIdNamePairs(1);
+        store.sortIdNamePairs(1, store.idNamePairs);
     }
 
     let listCard = "";

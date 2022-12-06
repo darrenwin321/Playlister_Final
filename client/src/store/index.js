@@ -320,7 +320,6 @@ function GlobalStoreContextProvider(props) {
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
-            let newList = response.data.playlist;
             storeReducer({
                 type: GlobalStoreActionType.CREATE_NEW_LIST,
                 payload: store.newListCounter + 1
@@ -328,14 +327,12 @@ function GlobalStoreContextProvider(props) {
             );
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
-            // history.push("/playlist/" + newList._id);
             store.loadIdNamePairs();
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
     }
-
     store.duplicateList = async function () {
         let counter = 1;
         let newListName = store.currentList.name + " Copy " + counter++;
@@ -378,7 +375,7 @@ function GlobalStoreContextProvider(props) {
                         sortedBy: store.sortedBy
                     }
                 });
-                store.sortIdNamePairs(store.sortedBy)
+                store.sortIdNamePairs(store.sortedBy, pairsArray)
             }
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
@@ -387,8 +384,8 @@ function GlobalStoreContextProvider(props) {
         asyncLoadIdNamePairs();
     }
 
-    store.sortIdNamePairs = async function (sort) {
-        let list = store.idNamePairs;
+    store.sortIdNamePairs = async function (sort, List) {
+        let list = List
         switch(sort){
             case 0:
                 list = 
@@ -408,7 +405,7 @@ function GlobalStoreContextProvider(props) {
             case 1: //get the list and grab the times. Have two arrays one for the playlist and one for the times. When you sort the times, sort the playlists after.
                 let times = [];
                 for (let i = 0; i < store.idNamePairs.length; i++){
-                    let id = store.idNamePairs[i]._id
+                    let id = List._id
                     async function asyncLookup(id){
                         let response = await api.getPlaylistById(id);
                         if (response.data.success){
@@ -429,12 +426,12 @@ function GlobalStoreContextProvider(props) {
                 let list3 = []
                 let badIndex =[]
                 for (let x = 0; x < times.length; x++){
-                    list3.push(store.idNamePairs[times[x].ogIndex])
+                    list3.push(List[times[x].ogIndex])
                     badIndex.push(times[x].ogIndex)
                 }
                 for (let j = 0; j < store.idNamePairs.length; j++){
                     if (badIndex.indexOf(j) === -1){
-                        list3.push(store.idNamePairs[j])
+                        list3.push(List[j])
                     }
                 }
                 storeReducer({

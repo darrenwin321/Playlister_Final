@@ -1,10 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
-import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -20,11 +17,12 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import MUIErrorModal from './MUIErrorModal'
 import MUINameErrorModal from './MUINameErrorModal';
 import UndoIcon from '@mui/icons-material/Undo';
 import AddIcon from '@mui/icons-material/Add';
 import RedoIcon from '@mui/icons-material/Redo';
+import PublishIcon from '@mui/icons-material/Publish';
+
 
 
 /*
@@ -196,6 +194,9 @@ function ListCard(props) {
     function handleDuplicate() {
         store.duplicateList();
     }
+    function handlePublish(){
+        store.publish();
+    }
 
     let selectClass = "unselected-list-card";
     if (selected) {
@@ -253,6 +254,39 @@ function ListCard(props) {
         />
     }
 
+    let buttons = <></>
+    let upload = <></>
+
+    if (open && !store.currentList.published){
+        buttons = 
+        <>
+            <IconButton onClick={handleUndo} disabled={!store.canUndo()} sx={{color:'black'}}>
+            <   UndoIcon
+                    sx={{fontSize: '2.8rem', m: 2}}
+                />
+            </IconButton>
+            <IconButton onClick={handleAddNewSong} disabled={!store.canAddNewSong()}>
+                <AddIcon
+                    sx={{fontSize: '2.8rem', m: 2, color:'black'}}
+                />
+            </IconButton>
+            <IconButton onClick={handleRedo} disabled={!store.canRedo()} sx={{color:'black'}}>
+                <RedoIcon
+                    sx={{fontSize: '2.8rem', m: 2}}
+                />
+            </IconButton>
+        </>
+
+        upload = 
+        <>
+            <IconButton sx={{color:'black'}} onClick={handlePublish}>
+                <PublishIcon
+                    sx={{fontSize: '2.8rem', m: 2}}
+                />
+            </IconButton>
+        </>
+        
+    }
 
 
     let cardElement =
@@ -273,23 +307,12 @@ function ListCard(props) {
                             {songs}
                     </Grid>
                     <Grid item xs={4}>
-                        <IconButton onClick={handleUndo} disabled={!store.canUndo()} sx={{color:'black'}}>
-                            <UndoIcon
-                                sx={{fontSize: '2.8rem', m: 2}}
-                            />
-                        </IconButton>
-                        <IconButton onClick={handleAddNewSong} disabled={!store.canAddNewSong()}>
-                            <AddIcon
-                                sx={{fontSize: '2.8rem', m: 2, color:'black'}}
-                            />
-                        </IconButton>
-                        <IconButton onClick={handleRedo} disabled={!store.canRedo()} sx={{color:'black'}}>
-                            <RedoIcon
-                                sx={{fontSize: '2.8rem', m: 2}}
-                            />
-                        </IconButton>
+                        {buttons}
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={4}>
+                    </Grid>
+                    <Grid item xs={1}>
+                        {upload}
                     </Grid>
                     <Grid item xs={3}>
                         <IconButton onClick={handleDeleteList}>

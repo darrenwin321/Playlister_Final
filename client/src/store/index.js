@@ -298,7 +298,7 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + (store.newListCounter++);
-        const response = await api.createPlaylist(newListName, [], auth.user.email);
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -569,6 +569,12 @@ function GlobalStoreContextProvider(props) {
         }
         asyncUpdateCurrentList();
     }
+
+    store.publish = function (){
+        store.currentList.published = true;
+        store.updateCurrentList()
+    }
+
     store.undo = function () {
         tps.undoTransaction();
     }

@@ -234,7 +234,7 @@ function ListCard(props) {
             </Box>
         {/* </ListItem>  */}
     </AccordionSummary>
-    if (editActive){
+    if (editActive && open && !store.currentList.published){
         card = 
         <TextField
             margin="normal"

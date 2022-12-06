@@ -342,9 +342,6 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS OF THE USER
     store.loadIdNamePairs = function () {
-        if (auth.user && auth.user.firstName === 'Guest' && auth.user.lastName === '' && auth.user.email === ''){
-            return;
-        }
         async function asyncLoadIdNamePairs() {
             const response = await api.getPlaylistPairs();
             if (response.data.success) {

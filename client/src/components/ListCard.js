@@ -151,9 +151,9 @@ function ListCard(props) {
 
     async function handleDeleteList(event, id) {
         event.stopPropagation();
-        let _id = event.target.id;
-        _id = ("" + _id).substring("delete-list-".length);
-        store.markListForDeletion(id);
+        // let _id = event.target.id;
+        // _id = ("" + _id).substring("delete-list-".length);
+        store.markListForDeletion(store.currentList._id);
     }
 
     function handleKeyPress(event) {
@@ -181,14 +181,20 @@ function ListCard(props) {
         setText(event.target.value);
     }
 
-    function handleAddNewSong() {
+    function handleAddNewSong(event) {
+        event.stopPropagation()
         store.addNewSong();
     }
-    function handleUndo() {
+    function handleUndo(event) {
+        event.stopPropagation()
         store.undo();
     }
-    function handleRedo() {
+    function handleRedo(event) {
+        event.stopPropagation()
         store.redo();
+    }
+    function handleDuplicate() {
+        store.duplicateList();
     }
 
     let selectClass = "unselected-list-card";
@@ -214,7 +220,7 @@ function ListCard(props) {
                 handleLoadList(event, idNamePair._id)
             }}
         > */}
-            <Box sx={{ p: 1, flexGrow: 1 }} elevation={0}>{idNamePair.name}</Box>
+            <Box sx={{ p: 1, flexGrow: 1 }} elevation={0} onDoubleClick={handleToggleEdit}>{idNamePair.name}</Box>
             <Box sx={{ p: 1 }} elevation={0}>
                 <IconButton >
                     <ThumbUpIcon style={{fontSize:'24pt'}} />
@@ -222,7 +228,7 @@ function ListCard(props) {
             </Box>
             <Box sx={{ p: 1 }} elevation={0}>
                 <IconButton>
-                    <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation or prevent default */}
+                    <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation */}
                 </IconButton> 
             </Box>
         {/* </ListItem>  */}
@@ -259,7 +265,6 @@ function ListCard(props) {
             // }}
             sx={{bgcolor: '#8000F00F', borderRadius:"30px", borderTopLeftRadius:'27px'}}
             disableGutters={true}
-            onDoubleClick={handleToggleEdit}
         >
             {card}
             <AccordionDetails>
@@ -268,9 +273,9 @@ function ListCard(props) {
                             {songs}
                     </Grid>
                     <Grid item xs={4}>
-                        <IconButton onClick={handleUndo} disabled={!store.canUndo()}>
+                        <IconButton onClick={handleUndo} disabled={!store.canUndo()} sx={{color:'black'}}>
                             <UndoIcon
-                                sx={{fontSize: '2.8rem', m: 2, color:'black'}}
+                                sx={{fontSize: '2.8rem', m: 2}}
                             />
                         </IconButton>
                         <IconButton onClick={handleAddNewSong} disabled={!store.canAddNewSong()}>
@@ -278,21 +283,25 @@ function ListCard(props) {
                                 sx={{fontSize: '2.8rem', m: 2, color:'black'}}
                             />
                         </IconButton>
-                        <IconButton onClick={handleRedo} disabled={!store.canRedo()}>
+                        <IconButton onClick={handleRedo} disabled={!store.canRedo()} sx={{color:'black'}}>
                             <RedoIcon
-                                sx={{fontSize: '2.8rem', m: 2, color:'black'}}
+                                sx={{fontSize: '2.8rem', m: 2}}
                             />
                         </IconButton>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={5}>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={3}>
+                        <IconButton onClick={handleDeleteList}>
                             <DeleteForeverIcon
-                                sx={{fontSize: '2.8rem', m: 2}}
+                                sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
                             />
+                        </IconButton>
+                        <IconButton onClick={handleDuplicate}>
                             <ContentCopyIcon
-                                sx={{fontSize: '2.8rem', m: 2}}
+                                sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
                             />
+                        </IconButton>
                     </Grid>
                     <Grid item>
 

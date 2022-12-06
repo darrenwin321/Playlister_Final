@@ -319,7 +319,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.duplicateList = async function () {
-        let newListName = store.currentList.name + store.newListCounter++;
+        let newListName = store.currentList.name + " Copy " + store.newListCounter++;
         const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email);
         console.log("createNewList response: " + response);
         if (response.status === 201) {

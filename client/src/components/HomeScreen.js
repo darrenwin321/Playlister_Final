@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
+import CommentCard from './CommentCard'
 
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
@@ -106,6 +107,26 @@ const HomeScreen = () => {
         store.sortIdNamePairs(1, store.idNamePairs);
     }
 
+    function handleComment(event) {
+        if (event.code === "Enter"){
+            if (event.target.value === '' || !store.currentList){
+                return;
+            }
+            store.addComment(event.target.value, auth.user);
+        }
+    }
+
+    let comments = <></>
+    if (store.currentList && store.currentList.comments){
+        comments = 
+        store.currentList.comments.map((x) => (
+            <CommentCard
+                user={x.user}
+                comment={x.comment}
+            />
+        ))
+    }
+
     let listCard = "";
     if (store) {
         listCard = 
@@ -180,7 +201,7 @@ const HomeScreen = () => {
                     <Box >
                         <Tabs value={value} onChange={handleTabChange}>
                             <Tab label="Video Player"{...a11yProps(0)} style={{color: 'black'}}/>
-                            <Tab label="Comments" {...a11yProps(1)} style={{color: 'black'}}/>
+                            <Tab label="Comments" {...a11yProps(1)} style={{color: 'black'}} disabled={!store.currentList}/> {/*   */}
                         </Tabs>
                     </Box>
 
@@ -188,7 +209,22 @@ const HomeScreen = () => {
                         <YouTubePlayer/>
                     </TabPanel>
                     <TabPanel value={value} index={1}>
-                        Comments
+                        <Grid container>
+                            <Grid item xs={12} height={'430px'}>
+                                {
+                                    comments
+                                }
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField 
+                                    id="Comment-Bar" 
+                                    label="Comment" 
+                                    variant="outlined" 
+                                    style={{width: '100%'}}
+                                    onKeyPress={handleComment}
+                                />
+                            </Grid>
+                        </Grid>
                     </TabPanel>
                 </Grid>
                 

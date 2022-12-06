@@ -316,7 +316,7 @@ function GlobalStoreContextProvider(props) {
                 newListName = "Untitled" + (store.newListCounter++);
             }
         }
-        const response = await api.createPlaylist(newListName, [], auth.user.email, false);
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false, []);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -404,8 +404,9 @@ function GlobalStoreContextProvider(props) {
 
             case 1: //get the list and grab the times. Have two arrays one for the playlist and one for the times. When you sort the times, sort the playlists after.
                 let times = [];
-                for (let i = 0; i < store.idNamePairs.length; i++){
-                    let id = List._id
+                for (let i = 0; i < List.length; i++){
+                    let id = List[i]._id
+                    console.log(id)
                     async function asyncLookup(id){
                         let response = await api.getPlaylistById(id);
                         if (response.data.success){
@@ -418,6 +419,7 @@ function GlobalStoreContextProvider(props) {
                     await asyncLookup(id)
                 }
                 let y = JSON.parse(JSON.stringify(times));
+                console.log(List)
                 console.log(y)
                 times = 
                     times.sort((a,b) =>
@@ -429,11 +431,11 @@ function GlobalStoreContextProvider(props) {
                     list3.push(List[times[x].ogIndex])
                     badIndex.push(times[x].ogIndex)
                 }
-                for (let j = 0; j < store.idNamePairs.length; j++){
-                    if (badIndex.indexOf(j) === -1){
-                        list3.push(List[j])
-                    }
+                for (let j = 0; j < badIndex.length; j++){
+                    List.splice(badIndex[j], 1)
                 }
+                list3 = list3.concat(List)
+                console.log(list3)
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload:{
@@ -651,6 +653,23 @@ function GlobalStoreContextProvider(props) {
             }
         }
         asyncUpdateCurrentList();
+    }
+
+    store.addComment = function(comment, user) {
+        let name = user.firstName + " " + user.lastName
+        let newComment = {user: name, comment: comment}
+        store.currentList.comments.push(newComment)
+        async function asyncAddComment() {
+            const response = await api.updatePlaylistByOther(store.currentList._id, store.currentList);
+            if (response.data.success) {
+                storeReducer({
+                    type: GlobalStoreActionType.SET_CURRENT_LIST,
+                    payload: store.currentList
+                });
+            }
+        }
+        asyncAddComment()
+        console.log('hello')
     }
 
     store.publish = function (){

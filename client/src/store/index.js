@@ -403,7 +403,7 @@ function GlobalStoreContextProvider(props) {
                 }
             });
         }
-        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], auth.user.firstName + " " + auth.user.lastName);
+        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], auth.user.username);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -895,8 +895,8 @@ function GlobalStoreContextProvider(props) {
         asyncUpdateCurrentList();
     }
 
-    store.addComment = function(comment, user) {
-        let name = user.firstName + " " + user.lastName
+    store.addComment = function(comment) {
+        let name = auth.user.username
         let newComment = {user: name, comment: comment}
         store.currentList.comments.push(newComment)
         async function asyncAddComment() {

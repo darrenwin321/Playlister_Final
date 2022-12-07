@@ -149,7 +149,7 @@ function AuthContextProvider(props) {
             }
         } catch(error){
             try{   
-                const response = await api.registerUser('Guest', 'Guest', 'Guest@guest.com', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');   
+                const response = await api.registerUser('Guest', 'Guest', 'Guest@guest.com', 'G', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');   
                 if (response.status === 200) {
                     console.log("Registered Sucessfully");
                     authReducer({

@@ -106,16 +106,8 @@ getPlaylistById = async (req, res) => {
         // DOES THIS LIST BELONG TO THIS USER?
         async function asyncFindUser(list) {
             await User.findOne({ email: list.ownerEmail }, (err, user) => {
-                console.log("user._id: " + user._id);
                 console.log("req.userId: " + req.userId);
-                if (user._id == req.userId || list.published) {
-                    console.log("correct user!");
-                    return res.status(200).json({ success: true, playlist: list })
-                }
-                else {
-                    console.log("incorrect user!");
-                    return res.status(400).json({ success: false, description: "authentication error" });
-                }
+                return res.status(200).json({ success: true, playlist: list })
             });
         }
         asyncFindUser(list);
@@ -245,10 +237,8 @@ updatePlaylist = async (req, res) => {
         // DOES THIS LIST BELONG TO THIS USER?
         async function asyncFindUser(list) {
             await User.findOne({ email: list.ownerEmail }, (err, user) => {
-                console.log("user._id: " + user._id);
                 console.log("req.userId: " + req.userId);
-                if (user._id == req.userId || list.published) {
-                    console.log("correct user!");
+                console.log("correct user!");
                     console.log("req.body.name: " + req.body.name);
 
                     list.name = body.playlist.name;
@@ -273,11 +263,6 @@ updatePlaylist = async (req, res) => {
                                 message: 'Playlist not updated!',
                             })
                         })
-                }
-                else {
-                    console.log("incorrect user!");
-                    return res.status(400).json({ success: false, description: "authentication error" });
-                }
             });
         }
         asyncFindUser(playlist);
@@ -310,7 +295,6 @@ updatePlaylistByOther = async (req, res) => {
                 message: 'Playlist not found!',
             })
         }
-
                 playlist.comments = body.playlist.comments;
                 playlist.likes = body.playlist.likes;
                 playlist.dislikes = body.playlist.dislikes;

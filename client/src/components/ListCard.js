@@ -225,6 +225,14 @@ function ListCard(props) {
         </Typography>
     }
     
+    let dislikeColor = ''
+    if (idNamePair.dislikes.indexOf(auth.user.email) > -1){
+        dislikeColor = 'black'
+    }
+    let likeColor = ''
+    if (idNamePair.likes.indexOf(auth.user.email) > -1){
+        likeColor = 'black'
+    }
 
     let card = 
     <AccordionSummary
@@ -242,7 +250,7 @@ function ListCard(props) {
         </Box>
         <Box sx={{ p: 1 }} elevation={0}>
             <IconButton onClick={handleLike}>
-                <ThumbUpIcon style={{fontSize:'24pt'}} />
+                <ThumbUpIcon style={{fontSize:'24pt'}} sx={{color: likeColor}}/>
                 <Typography sx={{transform:"translate(30%,0%)"}}>
                     {idNamePair.likes.length}
                 </Typography>
@@ -250,7 +258,7 @@ function ListCard(props) {
         </Box>
         <Box sx={{ p: 1 }} elevation={0}>
             <IconButton onClick={handleDislike}>
-                <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation */}
+                <ThumbDownIcon style={{fontSize:'24pt'}} sx={{color: dislikeColor}}/> {/* use event.stoppropagation */}
                 <Typography sx={{transform:"translate(30%,0%)"}}>
                     {idNamePair.dislikes.length}
                 </Typography>

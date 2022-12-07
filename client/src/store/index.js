@@ -374,7 +374,8 @@ function GlobalStoreContextProvider(props) {
             });
         }
         store.newListCounter++;
-        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], auth.user.firstName + " " + auth.user.lastName);
+        console.log(auth.user)
+        const response = await api.createPlaylist(newListName, [], auth.user.email, false, [], auth.user.username);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();

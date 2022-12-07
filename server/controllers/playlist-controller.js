@@ -152,7 +152,7 @@ getPlaylistPairs = async (req, res) => {
                         let pair = {
                             _id: list._id,
                             name: list.name,
-                            ownerName: user.firstName + ' ' + user.lastName,
+                            ownerName: list.ownerName,
                             publishDate: list.publishDate,
                             published: list.published,
                             likes: list.likes,

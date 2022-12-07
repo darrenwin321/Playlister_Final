@@ -56,6 +56,7 @@ function SongCard(props) {
     function handleClick(event) {
         // DOUBLE CLICK IS FOR SONG EDITING
         event.stopPropagation()
+        store.displaySong(index, song)
         if (event.detail === 2 && !store.currentList.published) {
             console.log("double clicked");
             store.showEditSongModal(index, song);

@@ -32,7 +32,8 @@ export const GlobalStoreActionType = {
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
     HIDE_MODALS: "HIDE_MODALS",
-    NAME_ERROR: "NAME_ERROR"
+    NAME_ERROR: "NAME_ERROR",
+    DISPLAY_SONG: "DISPLAY_SONG"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -239,6 +240,22 @@ function GlobalStoreContextProvider(props) {
                     sortedBy: store.sortedBy,
                 });
             }
+
+            case GlobalStoreActionType.DISPLAY_SONG: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: payload.index,
+                    currentSong: payload.song,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    sortedBy: store.sortedBy,
+                });
+            }
+
             default:
                 return store;
         }
@@ -670,6 +687,13 @@ function GlobalStoreContextProvider(props) {
         }
         asyncAddComment()
         console.log('hello')
+    }
+
+    store.displaySong = function(index, song) {
+        storeReducer({
+            type: GlobalStoreActionType.DISPLAY_SONG,
+            payload: {song: song, index: index}
+        });
     }
 
     store.publish = function (){

@@ -7,20 +7,41 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import PauseIcon from '@mui/icons-material/Pause';
 import { IconButton } from '@mui/material';
+import { useRef, useContext } from 'react';
+import { GlobalStoreContext } from '../store';
 
 export default function YouTubePlayerExample() {
+    const { store } = useContext(GlobalStoreContext);
     // THIS EXAMPLE DEMONSTRATES HOW TO DYNAMICALLY MAKE A
     // YOUTUBE PLAYER AND EMBED IT IN YOUR SITE. IT ALSO
     // DEMONSTRATES HOW TO IMPLEMENT A PLAYLIST THAT MOVES
     // FROM ONE SONG TO THE NEXT
 
     // THIS HAS THE YOUTUBE IDS FOR THE SONGS IN OUR PLAYLIST
+
     let playlist = [
         "F0B7HDiY-10"
     ];
+
+    let titles = [];
+    let artists = [];
+
+    if (store.currentList){
+        let songs = store.currentList.songs;
+        titles = [];
+        artists = [];
+        playlist = [];
+
+        songs.forEach(song => { 
+            titles.push(song.title)
+            artists.push(song.artist)
+            playlist.push(song.youTubeId)
+        });
+
+    }
     
     // this will allow us to interact with the player without having to interact with event.target
-    var videoPlayer = null;
+    const videoPlayer = useRef(null);
 
     // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
     let currentSong = 0;
@@ -66,28 +87,22 @@ export default function YouTubePlayerExample() {
 
     function handlePrevious(){
         decSong();
-        loadAndPlayCurrentSong(videoPlayer);
+        loadAndPlayCurrentSong(videoPlayer.current);
     }
 
     function handlePause(){
-        playerOptions.autoplay = 2
+        videoPlayer.current.pauseVideo()
     }
 
     function handlePlay(){
-        videoPlayer.playVideo();
+        videoPlayer.current.playVideo();
     }
 
     function handleNext(){
         incSong();
-        loadAndPlayCurrentSong(videoPlayer);
+        loadAndPlayCurrentSong(videoPlayer.current);
     }
 
-    function videoTarget(id){
-        if (!videoPlayer){
-            console.log(id)
-            videoPlayer = id
-        }
-    }
 
     // THIS IS OUR EVENT HANDLER FOR WHEN THE YOUTUBE PLAYER'S STATE
     // CHANGES. NOTE THAT playerStatus WILL HAVE A DIFFERENT INTEGER
@@ -96,7 +111,7 @@ export default function YouTubePlayerExample() {
     function onPlayerStateChange(event) {
         let playerStatus = event.data;
         let player = event.target.id;
-        videoTarget(event.target) 
+        videoPlayer.current = event.target 
         if (playerStatus === -1) {
             // VIDEO UNSTARTED
             console.log("-1 Video unstarted");
@@ -119,17 +134,22 @@ export default function YouTubePlayerExample() {
             console.log("5 Video cued");
         }
     }
+
+    let info = ''
+    if (store.currentList && store.currentSong){
+        info = store.currentList.name
+    }
     
     let card = 
         <Box>
             <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
-                Playlist: 
+                Playlist: {info}
             </Typography>
             <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
-                Current Song: 
+                Current Song: {titles[currentSong]}
             </Typography>
             <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
-                Artist: 
+                Artist: {artists[currentSong]}
             </Typography>
             <Box display="flex" justifyContent="center" alignItems="center">
                 <IconButton>
@@ -164,6 +184,7 @@ export default function YouTubePlayerExample() {
         <>
             <YouTube
                 id='videoPlayer'
+                ref={videoPlayer}
                 videoId={playlist[currentSong]}
                 opts={playerOptions}
                 onReady={onPlayerReady}

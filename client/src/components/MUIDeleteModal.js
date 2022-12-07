@@ -15,7 +15,7 @@ const style1 = {
     width: 345,
     height: 250,
     backgroundSize: "contain",
-    backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
+    backgroundImage: 'linear-gradient(orange, white)',
     border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
@@ -39,6 +39,7 @@ export default function MUIDeleteModal() {
         open={store.listMarkedForDeletion !== null}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        // hideBackdrop={true}
         >
         <Box sx={style1}>
             <Typography sx={{fontWeight: 'bold'}} id="modal-modal-title" variant="h4" component="h2">

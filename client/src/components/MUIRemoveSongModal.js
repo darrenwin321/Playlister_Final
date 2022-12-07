@@ -15,9 +15,10 @@ const style1 = {
     width: 345,
     height: 250,
     backgroundSize: "contain",
-    backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
+    backgroundImage: 'linear-gradient(orange, white)',
     border: '3px solid #000',
     padding: '20px',
+    
 };
 
 export default function MUIRemoveSongModal() {
@@ -45,7 +46,7 @@ export default function MUIRemoveSongModal() {
         open={store.currentModal === "REMOVE_SONG"}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        hideBackdrop='true'
+        // hideBackdrop='true'
         elevation={0} 
 
         >

@@ -22,6 +22,7 @@ import UndoIcon from '@mui/icons-material/Undo';
 import AddIcon from '@mui/icons-material/Add';
 import RedoIcon from '@mui/icons-material/Redo';
 import PublishIcon from '@mui/icons-material/Publish';
+import AuthContext from '../auth';;
 
 
 
@@ -38,6 +39,7 @@ function ListCard(props) {
     const [text, setText] = useState("");
     const { idNamePair, selected } = props;
     const [expanded, setExpanded] = React.useState(false);
+    const { auth } = useContext(AuthContext);
 
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
@@ -155,15 +157,15 @@ function ListCard(props) {
     }
 
     function handleAddNewSong(event) {
-        event.stopPropagation()
+        event.stopPropagation();
         store.addNewSong();
     }
     function handleUndo(event) {
-        event.stopPropagation()
+        event.stopPropagation();
         store.undo();
     }
     function handleRedo(event) {
-        event.stopPropagation()
+        event.stopPropagation();
         store.redo();
     }
     function handleDuplicate() {
@@ -171,6 +173,38 @@ function ListCard(props) {
     }
     function handlePublish(){
         store.publish();
+    }
+    function handleLike(event){
+        event.stopPropagation();
+        if (idNamePair.likes.indexOf(auth.user.email) > -1){
+            store.likeList(auth.user.email ,idNamePair._id, 1)
+        }
+        else{
+            if (idNamePair.dislikes.indexOf(auth.user.email) > -1){
+                store.likeList(auth.user.email ,idNamePair._id, 2)
+            }
+            else{
+                store.likeList(auth.user.email ,idNamePair._id, 0)
+            }
+            
+        }
+        
+    }
+    function handleDislike(event){
+        event.stopPropagation();
+        if (idNamePair.dislikes.indexOf(auth.user.email) > -1){
+            store.dislikeList(auth.user.email ,idNamePair._id, 1)
+        }
+        else{
+            if (idNamePair.likes.indexOf(auth.user.email) > -1){
+                store.dislikeList(auth.user.email ,idNamePair._id, 2)
+            }
+            else{
+                store.dislikeList(auth.user.email ,idNamePair._id, 0)
+            }
+            
+        }
+
     }
 
     let selectClass = "unselected-list-card";
@@ -190,6 +224,7 @@ function ListCard(props) {
             Published: {date.toLocaleDateString()}
         </Typography>
     }
+    
 
     let card = 
     <AccordionSummary
@@ -206,13 +241,19 @@ function ListCard(props) {
             {published}
         </Box>
         <Box sx={{ p: 1 }} elevation={0}>
-            <IconButton >
+            <IconButton onClick={handleLike}>
                 <ThumbUpIcon style={{fontSize:'24pt'}} />
+                <Typography sx={{transform:"translate(30%,0%)"}}>
+                    {idNamePair.likes.length}
+                </Typography>
             </IconButton> 
         </Box>
         <Box sx={{ p: 1 }} elevation={0}>
-            <IconButton>
+            <IconButton onClick={handleDislike}>
                 <ThumbDownIcon style={{fontSize:'24pt'}} /> {/* use event.stoppropagation */}
+                <Typography sx={{transform:"translate(30%,0%)"}}>
+                    {idNamePair.dislikes.length}
+                </Typography>
             </IconButton> 
         </Box>
     </AccordionSummary>

@@ -680,6 +680,60 @@ function GlobalStoreContextProvider(props) {
         console.log('hello')
     }
 
+    store.likeList = function(email, id, type) { //0 add 1 remove 2 remove from other and add to this one
+        async function asyncGetPlaylist(id){
+            let response = await api.getPlaylistById(id)
+            if (response.data.success){
+                let playlist = response.data.playlist;
+                if (type === 0){
+                    playlist.likes.push(email);
+                }
+                else if(type === 1){
+                    playlist.likes.splice(playlist.likes.indexOf(email), 1)
+                }
+                else{
+                    playlist.dislikes.splice(playlist.dislikes.indexOf(email), 1)
+                    playlist.likes.push(email);
+                }
+                async function updatePlaylist(id ,playlist){
+                    response = await api.updatePlaylistByOther(id, playlist);
+                    if (response.data.success){
+                        store.loadIdNamePairs();
+                    }
+                }
+                updatePlaylist(id, playlist)
+            }
+        }
+        asyncGetPlaylist(id)
+    }
+
+    store.dislikeList = function(email, id, type) {
+        async function asyncGetPlaylist(id){
+            let response = await api.getPlaylistById(id)
+            if (response.data.success){
+                let playlist = response.data.playlist;
+                if (type === 0){
+                    playlist.dislikes.push(email);
+                }
+                else if(type === 1){
+                    playlist.dislikes.splice(playlist.likes.indexOf(email), 1)
+                }
+                else{
+                    playlist.likes.splice(playlist.likes.indexOf(email), 1)
+                    playlist.dislikes.push(email);
+                }
+                async function updatePlaylist(id ,playlist){
+                    response = await api.updatePlaylistByOther(id, playlist);
+                    if (response.data.success){
+                        store.loadIdNamePairs();
+                    }
+                }
+                updatePlaylist(id, playlist)
+            }
+        }
+        asyncGetPlaylist(id)
+    }
+
     store.displaySong = function(index, song) {
         storeReducer({
             type: GlobalStoreActionType.DISPLAY_SONG,

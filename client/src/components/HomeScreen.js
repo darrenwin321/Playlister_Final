@@ -153,6 +153,7 @@ const HomeScreen = () => {
                         id="Search-Bar" 
                         label="Search" 
                         variant="outlined" 
+                        sx={{bgcolor: 'white', borderRadius: '5px', transform:"translate(0%, 10%)"}}
                         style={{width: '30%'}}
                         />
                 </Grid>
@@ -223,6 +224,7 @@ const HomeScreen = () => {
                                     variant="outlined" 
                                     style={{width: '100%'}}
                                     onKeyPress={handleComment}
+                                    sx={{bgcolor: 'white', borderRadius: '0px'}}
                                 />
                             </Grid>
                         </Grid>

@@ -113,6 +113,7 @@ const HomeScreen = () => {
                 return;
             }
             store.addComment(event.target.value, auth.user);
+            event.target.value = ''
         }
     }
 
@@ -210,7 +211,7 @@ const HomeScreen = () => {
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <Grid container>
-                            <Grid item xs={12} height={'430px'}>
+                            <Grid item xs={12} height={'430px'} overflow='auto'>
                                 {
                                     comments
                                 }

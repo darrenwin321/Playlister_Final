@@ -128,22 +128,33 @@ const HomeScreen = () => {
         ))
     }
 
+    function handleHome(){
+        store.loadIdNamePairs();
+    }
+
+    function handleGroup(){
+        store.loadPublished(1)
+    }
+    function handleUser(){
+        store.loadPublished(2)
+    }
+
     let listCard = "";
     if (store) {
         listCard = 
             <Grid container sx={{p: 2}}>
                 <Grid item xs={11}>
-                    <IconButton disabled={guest}>
+                    <IconButton disabled={guest} onClick={handleHome}>
                         <CottageIcon 
                             sx={{fontSize: '2.8rem', m: 2, color: {color}}}
                         /> 
                     </IconButton>
-                    <IconButton>
+                    <IconButton onClick={handleGroup}>
                         <GroupsIcon
                             sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
                         />
                     </IconButton>    
-                    <IconButton>
+                    <IconButton onClick={handleUser}>
                         <PersonIcon
                             sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
                         />

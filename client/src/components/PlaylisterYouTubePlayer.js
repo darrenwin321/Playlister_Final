@@ -28,15 +28,18 @@ export default function YouTubePlayerExample() {
 
     if (store.currentList){
         let songs = store.currentList.songs;
-        titles = [];
-        artists = [];
-        playlist = [];
+        if (songs){
+            titles = [];
+            artists = [];
+            playlist = [];
 
-        songs.forEach(song => { 
-            titles.push(song.title)
-            artists.push(song.artist)
-            playlist.push(song.youTubeId)
-        });
+            songs.forEach(song => { 
+                titles.push(song.title)
+                artists.push(song.artist)
+                playlist.push(song.youTubeId)
+            });
+        }
+        
 
     }
     
@@ -44,7 +47,7 @@ export default function YouTubePlayerExample() {
     const videoPlayer = useRef(null);
 
     // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
-    let currentSong = 0;
+    let currentSong = store.currentSongIndex;
 
     const playerOptions = {
         height: '270',
@@ -136,7 +139,7 @@ export default function YouTubePlayerExample() {
     }
 
     let info = ''
-    if (store.currentList && store.currentSong){
+    if (store.currentList){
         info = store.currentList.name
     }
     
@@ -146,10 +149,10 @@ export default function YouTubePlayerExample() {
                 Playlist: {info}
             </Typography>
             <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
-                Current Song: {titles[currentSong]}
+                Current Song: {titles[store.currentSongIndex]}
             </Typography>
             <Typography sx={{fontSize: '1.7rem', fontStyle: 'oblique',fontFamily: 'Monospace'}}>
-                Artist: {artists[currentSong]}
+                Artist: {artists[store.currentSongIndex]}
             </Typography>
             <Box display="flex" justifyContent="center" alignItems="center">
                 <IconButton>

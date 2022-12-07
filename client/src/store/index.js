@@ -421,6 +421,8 @@ function GlobalStoreContextProvider(props) {
 
             case 1: //get the list and grab the times. Have two arrays one for the playlist and one for the times. When you sort the times, sort the playlists after.
                 let times = [];
+                let others = [];
+                let list3 =[];
                 for (let i = 0; i < List.length; i++){
                     let id = List[i]._id
                     console.log(id)
@@ -429,30 +431,28 @@ function GlobalStoreContextProvider(props) {
                         if (response.data.success){
                             let playlist = response.data.playlist;
                             if (playlist.published){
-                                times.push({ogIndex: i , time: playlist.updatedAt});
+                                times.push({ogIndex: i , time: playlist.updatedAt, idName: List[i]});
+                            }
+                            else{
+                                others.push(List[i])
                             }
                         }
                     }
                     await asyncLookup(id)
                 }
                 let y = JSON.parse(JSON.stringify(times));
-                console.log(List)
                 console.log(y)
                 times = 
                     times.sort((a,b) =>
                         a.time.toUpperCase() > b.time.toUpperCase() ? -1 : 1
                     )
-                let list3 = []
-                let badIndex =[]
-                for (let x = 0; x < times.length; x++){
-                    list3.push(List[times[x].ogIndex])
-                    badIndex.push(times[x].ogIndex)
+                for (let j = 0; j < times.length; j++ ){
+                    list3.push(times[j].idName)
                 }
-                for (let j = 0; j < badIndex.length; j++){
-                    List.splice(badIndex[j], 1)
+                for (let k = 0; k < others.length; k++){
+                    list3.push(others[k])
                 }
-                list3 = list3.concat(List)
-                console.log(list3)
+                
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload:{

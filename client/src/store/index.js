@@ -426,47 +426,30 @@ function GlobalStoreContextProvider(props) {
                     });
         break;
 
-            case 1: //get the list and grab the times. Have two arrays one for the playlist and one for the times. When you sort the times, sort the playlists after.
-                let times = [];
-                let others = [];
-                let list3 =[];
-                for (let i = 0; i < List.length; i++){
-                    let id = List[i]._id
-                    console.log(id)
-                    async function asyncLookup(id){
-                        let response = await api.getPlaylistById(id);
-                        if (response.data.success){
-                            let playlist = response.data.playlist;
-                            if (playlist.published){
-                                times.push({ogIndex: i , time: playlist.updatedAt, idName: List[i]});
-                            }
-                            else{
-                                others.push(List[i])
-                            }
-                        }
+            case 1: 
+                let published = []
+                let notPublished = []
+                for (let i = 0; i < list.length; i++){
+                    if (list[i].published){
+                        published.push(list[i])
                     }
-                    await asyncLookup(id)
+                    else{
+                        notPublished.push(list[i])
+                    }
                 }
-                let y = JSON.parse(JSON.stringify(times));
-                console.log(y)
-                times = 
-                    times.sort((a,b) =>
-                        a.time.toUpperCase() > b.time.toUpperCase() ? -1 : 1
+                published = 
+                    published.sort((a,b) =>
+                        a.publishDate.toUpperCase() > b.publishDate.toUpperCase() ? -1 : 1
                     )
-                for (let j = 0; j < times.length; j++ ){
-                    list3.push(times[j].idName)
-                }
-                for (let k = 0; k < others.length; k++){
-                    list3.push(others[k])
-                }
-                
+                let finalList = published.concat(notPublished)
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                     payload:{
-                        pairsArray: list3,
-                        sortedBy: 1
+                        pairsArray: finalList,
+                        sortedBy: 1 
                     } 
                 });
+                
         break;
                     
         }
@@ -675,6 +658,7 @@ function GlobalStoreContextProvider(props) {
                     payload: store.currentList
                 });
             }
+            store.setCurrentList(store.currentList._id);
         }
         asyncUpdateCurrentList();
     }
@@ -705,6 +689,7 @@ function GlobalStoreContextProvider(props) {
 
     store.publish = function (){
         store.currentList.published = true;
+        store.currentList.publishDate = new Date()
         store.updateCurrentList()
     }
 

@@ -182,6 +182,15 @@ function ListCard(props) {
         cardStatus = true;
     }
 
+    let published = <></>
+    if (idNamePair.published){
+        let date = new Date(idNamePair.publishDate)
+        published = 
+        <Typography sx={{fontFamily:"Lexend Exa", fontSize:'18px'}}>
+            Published: {date.toLocaleDateString()}
+        </Typography>
+    }
+
     let card = 
     <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -190,7 +199,12 @@ function ListCard(props) {
         sx={{borderRadius:"30px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1, "&:hover":{backgroundColor: "white"}, }}
         style={{transform:"translate(0%,0%)", width: '100%', fontSize: '24pt' }}
     >
-        <Box sx={{ p: 1, flexGrow: 1 }} elevation={0} onDoubleClick={handleToggleEdit}>{idNamePair.name}</Box>
+        <Box sx={{ p: 1, flexGrow: 1 }} elevation={0} onDoubleClick={handleToggleEdit}>{idNamePair.name} 
+        <Typography sx={{fontFamily:"Lexend Exa", fontSize:'18px'}}>
+            By: {idNamePair.ownerName}
+        </Typography>
+            {published}
+        </Box>
         <Box sx={{ p: 1 }} elevation={0}>
             <IconButton >
                 <ThumbUpIcon style={{fontSize:'24pt'}} />

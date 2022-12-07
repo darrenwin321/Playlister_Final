@@ -19,7 +19,8 @@ const playlistSchema = new Schema(
         comments: { type: [{
             user: String,
             comment: String
-        }], required: true}
+        }], required: true},
+        publishDate: {type: Date}
     },
     { timestamps: true },
 )

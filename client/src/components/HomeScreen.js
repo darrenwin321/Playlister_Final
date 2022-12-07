@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
@@ -77,6 +77,7 @@ const HomeScreen = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const [query, setQuery] = useState('');
 
     useEffect(() => {
         store.loadIdNamePairs();
@@ -174,6 +175,9 @@ const HomeScreen = () => {
     function handleUser(){
         store.loadPublished(2)
     }
+    function handleQueryChange(event){
+        setQuery(event.target.value)
+    }
 
     let menu = 
         <Menu
@@ -209,6 +213,37 @@ const HomeScreen = () => {
         
     }
 
+    let search =
+    <List sx={{width: '100%', mb:"20px" }}>
+        {
+        store.idNamePairs.filter(pair => pair.name.toUpperCase().includes(query.toUpperCase())).map((pair) => 
+        (
+            <ListCard
+                key={pair._id}
+                idNamePair={pair}
+                selected={false}
+                            />
+        ))
+                        
+                    }
+    </List>
+
+    if (store.display === 2) {
+        search = 
+        <List sx={{width: '100%', mb:"20px" }}>
+                    {
+                        store.idNamePairs.filter(pair => pair.ownerName.toUpperCase().includes(query.toUpperCase())).map((pair) => (
+                            <ListCard
+                                key={pair._id}
+                                idNamePair={pair}
+                                selected={false}
+                            />
+                        ))
+                        
+                    }
+                    </List>
+    }
+
     let listCard = "";
     if (store) {
         listCard = 
@@ -231,6 +266,7 @@ const HomeScreen = () => {
                     </IconButton>
                         
                         <TextField 
+                        onChange={handleQueryChange}
                         id="Search-Bar" 
                         label="Search" 
                         variant="outlined" 
@@ -252,18 +288,7 @@ const HomeScreen = () => {
                     {menu}
                 </Grid>
                 <Grid item xs={8} overflow='scroll' height={'600px'}>
-                    <List sx={{width: '100%', mb:"20px" }}>
-                    {
-                        store.idNamePairs.map((pair) => (
-                            <ListCard
-                                key={pair._id}
-                                idNamePair={pair}
-                                selected={false}
-                            />
-                        ))
-                        
-                    }
-                    </List>    
+                    {search}  
                 </Grid>
 
                 <Grid item xs={4}>

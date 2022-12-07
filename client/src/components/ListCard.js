@@ -227,12 +227,12 @@ function ListCard(props) {
         published = 
         <>
             <Grid container>
-                <Grid item xs={11}>
+                <Grid item xs={10}>
                     <Typography sx={{fontFamily:"Lexend Exa", fontSize:'18px'}}>
                         Published: {date.toLocaleDateString()}     
                     </Typography>
                 </Grid>
-                <Grid item xs={1}>
+                <Grid item xs={2}>
                     <Typography sx={{transform:"translate(140%,-10%)", fontFamily:"Lexend Exa", fontSize:'18px'}}>
                         Views: {idNamePair.listens}
                     </Typography>

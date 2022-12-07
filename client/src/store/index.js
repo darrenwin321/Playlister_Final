@@ -663,6 +663,20 @@ function GlobalStoreContextProvider(props) {
         asyncUpdateCurrentList();
     }
 
+    store.updateCurrentList1 = function() {
+        async function asyncUpdateCurrentList() {
+            const response = await api.updatePlaylistById(store.currentList._id, store.currentList);
+            if (response.data.success) {
+                storeReducer({
+                    type: GlobalStoreActionType.SET_CURRENT_LIST,
+                    payload: store.currentList
+                });
+            }
+            store.loadIdNamePairs();
+        }
+        asyncUpdateCurrentList();
+    }
+
     store.addComment = function(comment, user) {
         let name = user.firstName + " " + user.lastName
         let newComment = {user: name, comment: comment}
@@ -744,7 +758,7 @@ function GlobalStoreContextProvider(props) {
     store.publish = function (){
         store.currentList.published = true;
         store.currentList.publishDate = new Date()
-        store.updateCurrentList()
+        store.updateCurrentList1()
     }
 
     store.undo = function () {

@@ -25,10 +25,12 @@ export default function YouTubePlayerExample() {
 
     let titles = [];
     let artists = [];
-
+    let currentSong = null;
     if (store.currentList){
         let songs = store.currentList.songs;
+        console.log(songs)
         if (songs){
+            currentSong = 0;
             titles = [];
             artists = [];
             playlist = [];
@@ -47,7 +49,10 @@ export default function YouTubePlayerExample() {
     const videoPlayer = useRef(null);
 
     // THIS IS THE INDEX OF THE SONG CURRENTLY IN USE IN THE PLAYLIST
-    let currentSong = store.currentSongIndex;
+    if (store.currentSongIndex){
+        currentSong = store.currentSongIndex;
+    }
+    
 
     const playerOptions = {
         height: '270',
@@ -120,6 +125,7 @@ export default function YouTubePlayerExample() {
         if (playerStatus === -1) {
             // VIDEO UNSTARTED
             console.log("-1 Video unstarted");
+            videoPlayer.current = event.target 
         } else if (playerStatus === 0) {
             // THE VIDEO HAS COMPLETED PLAYING
             console.log("0 Video ended");

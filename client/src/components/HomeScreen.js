@@ -128,6 +128,11 @@ const HomeScreen = () => {
         ))
     }
 
+    let disallowComments = false
+    if (store.currentList && !store.currentList.published){
+        disallowComments = true
+    }
+
     function handleHome(){
         store.loadIdNamePairs();
     }
@@ -230,6 +235,7 @@ const HomeScreen = () => {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField 
+                                    disabled={disallowComments}
                                     id="Comment-Bar" 
                                     label="Comment" 
                                     variant="outlined" 

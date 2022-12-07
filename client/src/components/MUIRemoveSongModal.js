@@ -46,7 +46,7 @@ export default function MUIRemoveSongModal() {
         open={store.currentModal === "REMOVE_SONG"}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        // hideBackdrop='true'
+        hideBackdrop='true'
         elevation={0} 
 
         >

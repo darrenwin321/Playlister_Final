@@ -234,6 +234,29 @@ function ListCard(props) {
         likeColor = 'black'
     }
 
+    let likeDislike = <></>
+    if (idNamePair.published){
+        likeDislike = 
+            <>
+                <Box sx={{ p: 1 }} elevation={0}>
+                    <IconButton onClick={handleLike}>
+                        <ThumbUpIcon style={{fontSize:'24pt'}} sx={{color: likeColor}}/>
+                        <Typography sx={{transform:"translate(30%,0%)"}}>
+                            {idNamePair.likes.length}
+                        </Typography>
+                    </IconButton> 
+                </Box>
+                <Box sx={{ p: 1 }} elevation={0}>
+                    <IconButton onClick={handleDislike}>
+                        <ThumbDownIcon style={{fontSize:'24pt'}} sx={{color: dislikeColor}}/> {/* use event.stoppropagation */}
+                        <Typography sx={{transform:"translate(30%,0%)"}}>
+                            {idNamePair.dislikes.length}
+                        </Typography>
+                    </IconButton> 
+                </Box>
+            </>
+    }
+
     let card = 
     <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
@@ -248,22 +271,7 @@ function ListCard(props) {
         </Typography>
             {published}
         </Box>
-        <Box sx={{ p: 1 }} elevation={0}>
-            <IconButton onClick={handleLike}>
-                <ThumbUpIcon style={{fontSize:'24pt'}} sx={{color: likeColor}}/>
-                <Typography sx={{transform:"translate(30%,0%)"}}>
-                    {idNamePair.likes.length}
-                </Typography>
-            </IconButton> 
-        </Box>
-        <Box sx={{ p: 1 }} elevation={0}>
-            <IconButton onClick={handleDislike}>
-                <ThumbDownIcon style={{fontSize:'24pt'}} sx={{color: dislikeColor}}/> {/* use event.stoppropagation */}
-                <Typography sx={{transform:"translate(30%,0%)"}}>
-                    {idNamePair.dislikes.length}
-                </Typography>
-            </IconButton> 
-        </Box>
+        {likeDislike}
     </AccordionSummary>
     if (editActive && open && !store.currentList.published){
         card = 

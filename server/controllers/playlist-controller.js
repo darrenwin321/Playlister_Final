@@ -108,7 +108,7 @@ getPlaylistById = async (req, res) => {
             await User.findOne({ email: list.ownerEmail }, (err, user) => {
                 console.log("user._id: " + user._id);
                 console.log("req.userId: " + req.userId);
-                if (user._id == req.userId) {
+                if (user._id == req.userId || list.published) {
                     console.log("correct user!");
                     return res.status(200).json({ success: true, playlist: list })
                 }
@@ -197,7 +197,7 @@ getPublishedPairs = async (req, res) => {
                         let pair = {
                             _id: list._id,
                             name: list.name,
-                            ownerName: user.firstName + ' ' + user.lastName,
+                            ownerName: list.ownerName,
                             publishDate: list.publishDate,
                             published: list.published,
                             likes: list.likes,
@@ -243,7 +243,7 @@ updatePlaylist = async (req, res) => {
             await User.findOne({ email: list.ownerEmail }, (err, user) => {
                 console.log("user._id: " + user._id);
                 console.log("req.userId: " + req.userId);
-                if (user._id == req.userId) {
+                if (user._id == req.userId || list.published) {
                     console.log("correct user!");
                     console.log("req.body.name: " + req.body.name);
 

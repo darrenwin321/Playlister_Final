@@ -39,7 +39,7 @@ export default function MUIDeleteModal() {
         open={store.listMarkedForDeletion !== null}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        // hideBackdrop={true}
+        hideBackdrop={true}
         >
         <Box sx={style1}>
             <Typography sx={{fontWeight: 'bold'}} id="modal-modal-title" variant="h4" component="h2">

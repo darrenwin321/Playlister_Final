@@ -55,7 +55,9 @@ export default function MUIEditSongModal() {
     return (
         <Modal
             open={store.currentModal == "EDIT_SONG"}
-            // hideBackdrop={true}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            hideBackdrop={true}
         >
         <Box sx={style1}>
             <div id="edit-song-modal" data-animation="slideInOutLeft">

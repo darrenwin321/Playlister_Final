@@ -24,6 +24,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AuthContext from '../auth';
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
 
 /*
@@ -129,7 +130,7 @@ const HomeScreen = () => {
     }
 
     let disallowComments = false
-    if (store.currentList && !store.currentList.published){
+    if ((store.currentList && !store.currentList.published) || (!store.currentList)){
         disallowComments = true
     }
 
@@ -142,6 +143,40 @@ const HomeScreen = () => {
     }
     function handleUser(){
         store.loadPublished(2)
+    }
+
+    let menu = 
+        <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+                'aria-labelledby': 'basic-button',
+            }}
+        >
+            <MenuItem onClick={handleAlphaSort}>Name (A - Z)</MenuItem>
+            <MenuItem onClick={handleDateSort}>Publish Date (Newest)</MenuItem>
+            <MenuItem>Listens (High - Low)</MenuItem>
+            <MenuItem>Likes (High - Low)</MenuItem>
+            <MenuItem>Dislikes (High - Low)</MenuItem>
+        </Menu>
+    if (store.display === 0){
+        menu = 
+            <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                }}
+            >
+                <MenuItem onClick={handleAlphaSort}>Name (A - Z)</MenuItem>
+                <MenuItem>Creation Date (Old - New)</MenuItem>
+                <MenuItem>Last Edit (New - Old)</MenuItem>
+            </Menu>
+        
     }
 
     let listCard = "";
@@ -184,21 +219,7 @@ const HomeScreen = () => {
                             aria-haspopup="true"
                         />
                     </IconButton>
-                    <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          'aria-labelledby': 'basic-button',
-                        }}
-                    >
-                        <MenuItem onClick={handleAlphaSort}>Name (A - Z)</MenuItem>
-                        <MenuItem onClick={handleDateSort}>Publish Date (Newest)</MenuItem>
-                        <MenuItem>Listens (High - Low)</MenuItem>
-                        <MenuItem>Likes (High - Low)</MenuItem>
-                        <MenuItem>Dislikes (High - Low)</MenuItem>
-                    </Menu>
+                    {menu}
                 </Grid>
                 <Grid item xs={8} overflow='scroll' height={'600px'}>
                     <List sx={{width: '100%', mb:"20px" }}>
@@ -228,7 +249,7 @@ const HomeScreen = () => {
                     </TabPanel>
                     <TabPanel value={value} index={1}>
                         <Grid container>
-                            <Grid item xs={12} height={'430px'} overflow='auto'>
+                            <Grid item xs={12} height={'400px'} overflow='auto'>
                                 {
                                     comments
                                 }
@@ -241,7 +262,7 @@ const HomeScreen = () => {
                                     variant="outlined" 
                                     style={{width: '100%'}}
                                     onKeyPress={handleComment}
-                                    sx={{bgcolor: 'white', borderRadius: '0px'}}
+                                    sx={{bgcolor: 'white', borderRadius: '0px', transform:"translate(0%, -10%)"}}
                                 />
                             </Grid>
                         </Grid>
@@ -258,8 +279,9 @@ const HomeScreen = () => {
                 aria-label="add"
                 id="add-list-button"
                 onClick={handleCreateNewList}
+                disabled={store.display > 0 || guest}
             >
-                <AddIcon />
+                <PlaylistAddIcon />
             </Fab>
                 <img style={{ width: 260, height: 100 }} src={logo} alt="logo"/>
             </div>

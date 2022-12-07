@@ -41,6 +41,11 @@ function ListCard(props) {
     const [expanded, setExpanded] = React.useState(false);
     const { auth } = useContext(AuthContext);
 
+    let guest = false
+    if (auth.user && auth.user.email === 'Guest@guest.com'){
+        guest = true
+    }
+
     const handleChange = (panel) => (event, isExpanded) => {
         setExpanded(isExpanded ? panel : false);
         if (store.currentList){
@@ -239,7 +244,7 @@ function ListCard(props) {
         likeDislike = 
             <>
                 <Box sx={{ p: 1 }} elevation={0}>
-                    <IconButton onClick={handleLike}>
+                    <IconButton onClick={handleLike} disabled={guest}>
                         <ThumbUpIcon style={{fontSize:'24pt'}} sx={{color: likeColor}}/>
                         <Typography sx={{transform:"translate(30%,0%)"}}>
                             {idNamePair.likes.length}
@@ -247,7 +252,7 @@ function ListCard(props) {
                     </IconButton> 
                 </Box>
                 <Box sx={{ p: 1 }} elevation={0}>
-                    <IconButton onClick={handleDislike}>
+                    <IconButton onClick={handleDislike} disabled={guest}>
                         <ThumbDownIcon style={{fontSize:'24pt'}} sx={{color: dislikeColor}}/> {/* use event.stoppropagation */}
                         <Typography sx={{transform:"translate(30%,0%)"}}>
                             {idNamePair.dislikes.length}
@@ -326,6 +331,12 @@ function ListCard(props) {
         </>
         
     }
+    let disabled = false
+    if (guest || store.currentList && auth.user.email !== store.currentList.ownerEmail){
+        console.log(auth.user.email)
+        console.log(idNamePair.ownerEmail)
+        disabled = true
+    }
 
 
     let cardElement =
@@ -354,14 +365,14 @@ function ListCard(props) {
                         {upload}
                     </Grid>
                     <Grid item xs={3}>
-                        <IconButton onClick={handleDeleteList}>
+                        <IconButton onClick={handleDeleteList} disabled={disabled} sx={{color: 'black'}}>
                             <DeleteForeverIcon
-                                sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
+                                sx={{fontSize: '2.8rem', m: 2}}
                             />
                         </IconButton>
-                        <IconButton onClick={handleDuplicate}>
+                        <IconButton onClick={handleDuplicate} disabled={guest} sx={{color: 'black'}}>
                             <ContentCopyIcon
-                                sx={{fontSize: '2.8rem', m: 2, color: 'black'}}
+                                sx={{fontSize: '2.8rem', m: 2}}
                             />
                         </IconButton>
                     </Grid>

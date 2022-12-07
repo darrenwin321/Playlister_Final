@@ -395,7 +395,7 @@ function GlobalStoreContextProvider(props) {
                 }
             });
         }
-        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false);
+        const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false, [], auth.user.firstName + " " + auth.user.lastName);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
             tps.clearAllTransactions();
@@ -408,7 +408,7 @@ function GlobalStoreContextProvider(props) {
 
             // IF IT'S A VALID LIST THEN LET'S START EDITING IT
             // history.push("/playlist/" + newList._id);
-            store.loadIdNamePairs();
+            store.loadIdNamePairs(); //bug where name will not be unique if you copy other people's lists
         }
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
@@ -427,6 +427,13 @@ function GlobalStoreContextProvider(props) {
                     payload: {
                         pairsArray: pairsArray,
                         sortedBy: store.sortedBy
+                    }
+                });
+                storeReducer({
+                    type: GlobalStoreActionType.DISPLAY_PLAYLIST,
+                    payload: {
+                        idNamePairs: pairsArray,
+                        display: 0
                     }
                 });
                 store.sortIdNamePairs(store.sortedBy, pairsArray)
@@ -781,7 +788,13 @@ function GlobalStoreContextProvider(props) {
                 async function updatePlaylist(id ,playlist){
                     response = await api.updatePlaylistByOther(id, playlist);
                     if (response.data.success){
-                        store.loadIdNamePairs();
+                        if (store.display === 0){
+                            store.loadIdNamePairs();
+                        }
+                        else{
+                            store.loadPublished()
+                        }
+                        
                     }
                 }
                 updatePlaylist(id, playlist)
@@ -808,7 +821,12 @@ function GlobalStoreContextProvider(props) {
                 async function updatePlaylist(id ,playlist){
                     response = await api.updatePlaylistByOther(id, playlist);
                     if (response.data.success){
-                        store.loadIdNamePairs();
+                        if (store.display === 0){
+                            store.loadIdNamePairs();
+                        }
+                        else{
+                            store.loadPublished()
+                        }
                     }
                 }
                 updatePlaylist(id, playlist)

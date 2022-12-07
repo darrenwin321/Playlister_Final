@@ -70,6 +70,7 @@ export default function YouTubePlayerExample() {
     function incSong() {
         currentSong++;
         currentSong = currentSong % playlist.length;
+        store.displaySong(currentSong, store.currentList.songs[currentSong])
     }
 
     function decSong() {
@@ -80,6 +81,7 @@ export default function YouTubePlayerExample() {
         else{
             currentSong = currentSong % playlist.length;
         }
+        store.displaySong(currentSong, store.currentList.songs[currentSong])
         
     }
 

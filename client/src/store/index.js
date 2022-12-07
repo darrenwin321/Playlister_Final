@@ -327,12 +327,16 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
-        let newListName = "Untitled" + (store.newListCounter++);
-        for (let i = 0; i < store.idNamePairs.length; i++){
-            if (store.idNamePairs[i].name === newListName){
-                newListName = "Untitled" + (store.newListCounter++);
-            }
+        let newListName = "Untitled" + store.newListCounter;
+        for(let i = 0; i < store.idNamePairs.length; i++) {
+            store.idNamePairs.map((pair) => {
+                if(newListName === pair.name) {
+                    store.newListCounter++;
+                    newListName = "Untitled" + store.newListCounter;
+                }
+            });
         }
+        store.newListCounter++;
         const response = await api.createPlaylist(newListName, [], auth.user.email, false, []);
         console.log("createNewList response: " + response);
         if (response.status === 201) {
@@ -352,11 +356,14 @@ function GlobalStoreContextProvider(props) {
     }
     store.duplicateList = async function () {
         let counter = 1;
-        let newListName = store.currentList.name + " Copy " + counter++;
-        for (let i = 0; i < store.idNamePairs.length; i++){
-            if (store.idNamePairs[i].name === newListName){
-                newListName = store.currentList.name + " Copy " + counter++;
-            }
+        let name = store.currentList.name
+        let newListName = name + " Copy " + counter++;
+        for(let i = 0; i < store.idNamePairs.length; i++) {
+            store.idNamePairs.map((pair) => {
+                if(newListName === pair.name) {
+                    newListName = name + " Copy " + counter++;
+                }
+            });
         }
         const response = await api.createPlaylist(newListName, store.currentList.songs, auth.user.email, false);
         console.log("createNewList response: " + response);

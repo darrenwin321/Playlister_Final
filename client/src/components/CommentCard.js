@@ -8,13 +8,13 @@ function CommentCard(props){
     let card = 
     <Box 
         sx={{bgcolor: '#8000F00F', borderRadius:"30px", borderTopLeftRadius:'27px', my:'9px'}}
-        height= '100px'
-        width='98%'
+        height= '120px'
+        width='95%'
     >
         <Typography sx={{transform:"translate(7%,0%)", fontFamily:"Lexend Exa", fontSize:'18px'}}>
             {userText}
         </Typography>
-        <Typography sx={{transform:"translate(10%,0%)", fontFamily:"Lexend Exa", fontSize:'18px'}} width='20vw'>
+        <Typography sx={{transform:"translate(7%,0%)", fontFamily:"Lexend Exa", fontSize:'18px'}} width='20vw'>
             {comment}
         </Typography>
     </Box>

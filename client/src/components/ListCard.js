@@ -54,11 +54,11 @@ function ListCard(props) {
             }
             else if (idNamePair._id !== store.currentList._id){
                 store.closeCurrentList()
-                store.setCurrentList(idNamePair._id);
+                store.setCurrentList1(idNamePair._id);
             }
         }   
         else{
-            store.setCurrentList(idNamePair._id);
+            store.setCurrentList1(idNamePair._id);
         }
 
     };
@@ -225,9 +225,23 @@ function ListCard(props) {
     if (idNamePair.published){
         let date = new Date(idNamePair.publishDate)
         published = 
-        <Typography sx={{fontFamily:"Lexend Exa", fontSize:'18px'}}>
-            Published: {date.toLocaleDateString()}
-        </Typography>
+        <>
+            <Grid container>
+                <Grid item xs={11}>
+                    <Typography sx={{fontFamily:"Lexend Exa", fontSize:'18px'}}>
+                        Published: {date.toLocaleDateString()}     
+                    </Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    <Typography sx={{transform:"translate(140%,-10%)", fontFamily:"Lexend Exa", fontSize:'18px'}}>
+                        Views: {idNamePair.listens}
+                    </Typography>
+                </Grid>
+                
+            </Grid>
+            
+        </>
+        
     }
     
     let dislikeColor = ''

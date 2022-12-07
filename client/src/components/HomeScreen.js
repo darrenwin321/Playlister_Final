@@ -103,9 +103,39 @@ const HomeScreen = () => {
         store.sortIdNamePairs(0, store.idNamePairs);
     }
 
+    function handleAlphaSort1() {
+        handleClose()
+        store.sortIdNamePairs(3, store.idNamePairs);
+    }
+
     function handleDateSort() {
         handleClose()
         store.sortIdNamePairs(1, store.idNamePairs);
+    }
+
+    function handleListensSort() {
+        handleClose()
+        store.sortIdNamePairs(2, store.idNamePairs);
+    }
+
+    function handleLikeSort() {
+        handleClose()
+        store.sortIdNamePairs(4, store.idNamePairs);
+    }
+
+    function handleDislikeSort() {
+        handleClose()
+        store.sortIdNamePairs(4, store.idNamePairs);
+    }
+
+    function handleCreateSort() {
+        handleClose()
+        store.sortIdNamePairs(6, store.idNamePairs);
+    }
+
+    function handleUpdateSort() {
+        handleClose()
+        store.sortIdNamePairs(7, store.idNamePairs);
     }
 
     function handleComment(event) {
@@ -155,11 +185,11 @@ const HomeScreen = () => {
                 'aria-labelledby': 'basic-button',
             }}
         >
-            <MenuItem onClick={handleAlphaSort}>Name (A - Z)</MenuItem>
+            <MenuItem onClick={handleAlphaSort1}>Name (A - Z)</MenuItem>
             <MenuItem onClick={handleDateSort}>Publish Date (Newest)</MenuItem>
-            <MenuItem>Listens (High - Low)</MenuItem>
-            <MenuItem>Likes (High - Low)</MenuItem>
-            <MenuItem>Dislikes (High - Low)</MenuItem>
+            <MenuItem onClick={handleListensSort}>Views (High - Low)</MenuItem>
+            <MenuItem onClick={handleLikeSort}>Likes (High - Low)</MenuItem>
+            <MenuItem onClick={handleDislikeSort}>Dislikes (High - Low)</MenuItem>
         </Menu>
     if (store.display === 0){
         menu = 
@@ -173,8 +203,8 @@ const HomeScreen = () => {
                 }}
             >
                 <MenuItem onClick={handleAlphaSort}>Name (A - Z)</MenuItem>
-                <MenuItem>Creation Date (Old - New)</MenuItem>
-                <MenuItem>Last Edit (New - Old)</MenuItem>
+                <MenuItem onClick={handleCreateSort}>Creation Date (Old - New)</MenuItem>
+                <MenuItem onClick={handleUpdateSort}>Last Edit (New - Old)</MenuItem>
             </Menu>
         
     }
@@ -279,7 +309,7 @@ const HomeScreen = () => {
                 aria-label="add"
                 id="add-list-button"
                 onClick={handleCreateNewList}
-                disabled={store.display > 0 || guest}
+                disabled={store.display != 0 || guest}
             >
                 <PlaylistAddIcon />
             </Fab>

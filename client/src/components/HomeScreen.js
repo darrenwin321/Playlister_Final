@@ -195,7 +195,7 @@ const HomeScreen = () => {
             <MenuItem onClick={handleLikeSort}>Likes (High - Low)</MenuItem>
             <MenuItem onClick={handleDislikeSort}>Dislikes (High - Low)</MenuItem>
         </Menu>
-    if (store.display === 0){
+    if (store.display[0] === 0){
         menu = 
             <Menu
                 id="basic-menu"
@@ -228,7 +228,7 @@ const HomeScreen = () => {
                     }
     </List>
 
-    if (store.display === 2) {
+    if (store.display[0] === 2) {
         search = 
         <List sx={{width: '100%', mb:"20px" }}>
                     {
@@ -334,7 +334,7 @@ const HomeScreen = () => {
                 aria-label="add"
                 id="add-list-button"
                 onClick={handleCreateNewList}
-                disabled={store.display != 0 || guest}
+                disabled={store.display[0] != 0 || guest}
             >
                 <PlaylistAddIcon />
             </Fab>

@@ -543,24 +543,20 @@ function GlobalStoreContextProvider(props) {
                     return;
                 }
                 let published = []
-                let notPublished = []
                 for (let i = 0; i < list.length; i++){
                     if (list[i].published){
                         published.push(list[i])
-                    }
-                    else{
-                        notPublished.push(list[i])
                     }
                 }
                 published = 
                     published.sort((a,b) =>
                         a.publishDate.toUpperCase() > b.publishDate.toUpperCase() ? -1 : 1
                     )
-                let finalList = published.concat(notPublished)
+                let finalList = published
                 storeReducer({
                     type: GlobalStoreActionType.DISPLAY_PLAYLIST,
                     payload: {
-                        idNamePairs: list,
+                        idNamePairs: finalList,
                         display: [store.display[0], 1]
                     }
                 });

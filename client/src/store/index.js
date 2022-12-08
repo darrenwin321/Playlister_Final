@@ -953,7 +953,7 @@ function GlobalStoreContextProvider(props) {
                             store.loadIdNamePairs();
                         }
                         else{
-                            store.loadPublished()
+                            store.loadPublished(store.display[0])
                         }
                         
                     }
@@ -986,7 +986,7 @@ function GlobalStoreContextProvider(props) {
                             store.loadIdNamePairs();
                         }
                         else{
-                            store.loadPublished()
+                            store.loadPublished(store.display[0])
                         }
                     }
                 }

@@ -126,7 +126,7 @@ const HomeScreen = () => {
 
     function handleDislikeSort() {
         handleClose()
-        store.sortIdNamePairs(4, store.idNamePairs);
+        store.sortIdNamePairs(5, store.idNamePairs);
     }
 
     function handleCreateSort() {

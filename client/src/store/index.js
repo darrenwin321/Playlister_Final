@@ -64,7 +64,7 @@ function GlobalStoreContextProvider(props) {
         listIdMarkedForDeletion: null,
         listMarkedForDeletion: null,
         sortedBy: -1,
-        display: []
+        display: [0,-1]
 
     });
     const history = useHistory();
@@ -437,7 +437,17 @@ function GlobalStoreContextProvider(props) {
                 //         sortedBy: 0
                 //     }
                 // });
-                storeReducer({
+                if (store.display[0] !== 0){
+                    storeReducer({
+                        type: GlobalStoreActionType.DISPLAY_PLAYLIST,
+                        payload: {
+                            idNamePairs: pairsArray,
+                            display: [0,-1]
+                        }
+                    });
+                }
+                else{
+                    storeReducer({
                     type: GlobalStoreActionType.DISPLAY_PLAYLIST,
                     payload: {
                         idNamePairs: pairsArray,
@@ -445,6 +455,8 @@ function GlobalStoreContextProvider(props) {
                     }
                 });
                 store.sortIdNamePairs(store.display[1], pairsArray)
+                }
+                
                 
                 // else{
                 //     // store.sortIdNamePairs(store.sortedBy, pairsArray)
@@ -474,15 +486,26 @@ function GlobalStoreContextProvider(props) {
                 //         sortedBy: 3
                 //     }
                 // });
-                
-                storeReducer({
-                    type: GlobalStoreActionType.DISPLAY_PLAYLIST,
-                    payload: {
-                        idNamePairs: pairsArray,
-                        display: [display, store.display[1]]
-                    }
+                if (store.display[0] === 0){
+                    storeReducer({
+                        type: GlobalStoreActionType.DISPLAY_PLAYLIST,
+                        payload: {
+                            idNamePairs: pairsArray,
+                            display: [display, -1]
+                        }
+                    });
+                }
+                else{
+                    storeReducer({
+                        type: GlobalStoreActionType.DISPLAY_PLAYLIST,
+                        payload: {
+                            idNamePairs: pairsArray,
+                            display: [display, store.display[1]]
+                        }
                 });
                 store.sortIdNamePairs(store.display[1], pairsArray)
+                }
+                
             }
             else {
                 console.log("API FAILED TO GET THE LIST PAIRS");
@@ -930,7 +953,7 @@ function GlobalStoreContextProvider(props) {
                 async function updatePlaylist(id ,playlist){
                     response = await api.updatePlaylistByOther(id, playlist);
                     if (response.data.success){
-                        if (store.display === 0){
+                        if (store.display[0] === 0){
                             store.loadIdNamePairs();
                         }
                         else{
@@ -963,7 +986,7 @@ function GlobalStoreContextProvider(props) {
                 async function updatePlaylist(id ,playlist){
                     response = await api.updatePlaylistByOther(id, playlist);
                     if (response.data.success){
-                        if (store.display === 0){
+                        if (store.display[0] === 0){
                             store.loadIdNamePairs();
                         }
                         else{

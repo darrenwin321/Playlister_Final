@@ -19,10 +19,7 @@ export default function YouTubePlayerExample() {
 
     // THIS HAS THE YOUTUBE IDS FOR THE SONGS IN OUR PLAYLIST
 
-    let playlist = [
-        "F0B7HDiY-10"
-    ];
-
+    let playlist = [];
     let titles = [];
     let artists = [];
     let currentSong = null;
@@ -67,6 +64,7 @@ export default function YouTubePlayerExample() {
     // THE PLAYER AND PLAYS IT
     function loadAndPlayCurrentSong(player) {
         let song = playlist[currentSong];
+        console.log(song)
         player.loadVideoById(song);
         player.playVideo();
     }
@@ -91,8 +89,7 @@ export default function YouTubePlayerExample() {
     }
 
     function onPlayerReady(event) {
-        loadAndPlayCurrentSong(event.target);
-        event.target.playVideo();
+        videoPlayer.current = event.target 
     }
 
     function handlePrevious(){
@@ -120,8 +117,7 @@ export default function YouTubePlayerExample() {
     // VALUE OF 0 MEANS THE SONG PLAYING HAS ENDED.
     function onPlayerStateChange(event) {
         let playerStatus = event.data;
-        let player = event.target.id;
-        videoPlayer.current = event.target 
+        let player = event.target;
         if (playerStatus === -1) {
             // VIDEO UNSTARTED
             console.log("-1 Video unstarted");

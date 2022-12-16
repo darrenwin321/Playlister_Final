@@ -476,7 +476,7 @@ function GlobalStoreContextProvider(props) {
 
     store.loadPublished = function (display) { //1 being all publish and 2 being user search
         async function asyncLoadIdNamePairs() {
-            const response = await api.getPublishedPairs(); //switch this bitch out
+            const response = await api.getPublishedPairs(); 
             if (response.data.success) {
                 let pairsArray = response.data.idNamePairs;
                 // storeReducer({
@@ -953,7 +953,7 @@ function GlobalStoreContextProvider(props) {
                             store.loadIdNamePairs();
                         }
                         else{
-                            store.loadPublished()
+                            store.loadPublished(store.display[0])
                         }
                         
                     }
@@ -986,7 +986,7 @@ function GlobalStoreContextProvider(props) {
                             store.loadIdNamePairs();
                         }
                         else{
-                            store.loadPublished()
+                            store.loadPublished(store.display[0])
                         }
                     }
                 }

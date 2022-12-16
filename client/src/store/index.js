@@ -356,7 +356,7 @@ function GlobalStoreContextProvider(props) {
             store.loadIdNamePairs()
         }
         else{
-            store.loadPublished()
+            store.loadPublished(store.display[0])
         }
         
         // history.push("/");
@@ -494,6 +494,15 @@ function GlobalStoreContextProvider(props) {
                             display: [display, -1]
                         }
                     });
+                }
+                else if(display !== store.display[0]){
+                    storeReducer({
+                        type: GlobalStoreActionType.DISPLAY_PLAYLIST,
+                        payload: {
+                            idNamePairs: pairsArray,
+                            display: [display, -1]
+                        }
+                });
                 }
                 else{
                     storeReducer({

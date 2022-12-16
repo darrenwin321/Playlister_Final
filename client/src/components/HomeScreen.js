@@ -30,7 +30,6 @@ import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 /*
     This React component lists all the top5 lists in the UI.
     
-    @author McKilla Gorilla
 */
 
 function TabPanel(props) {

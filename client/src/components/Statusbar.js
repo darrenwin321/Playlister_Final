@@ -6,7 +6,6 @@ import AuthContext from '../auth'
 /*
     Our Status bar React component goes at the bottom of our UI.
     
-    @author McKilla Gorilla
 */
 function Statusbar() {
     const { store } = useContext(GlobalStoreContext);

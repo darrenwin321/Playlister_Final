@@ -333,7 +333,7 @@ function GlobalStoreContextProvider(props) {
                                         playlist: playlist
                                     }
                                 });
-                                store.sortIdNamePairs(store.sortedBy)
+                                store.sortIdNamePairs(store.sortedBy, pairsArray)
                             }
                         }
                         getListPairs(playlist);
